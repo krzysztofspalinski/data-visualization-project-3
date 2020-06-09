@@ -119,12 +119,11 @@ app.layout = html.Div(
                             style={'text-align': 'center'},
                             children=[
                                 html.Div(
-                                    style={'width': 'fit-content',
-                                           'display': 'inline-block'},
+                                    style={'width': 'fit-content'},
                                     children=[
                                         html.H1(
                                             id='some-header',
-                                            children='Ile cośtam gdzieśtam?',
+                                            children='Ilukrotnie wzrosło zadłużenie między okresem styczniowym a listopadowym?',
                                             style={'font-weight': 'bold',
                                                    'padding': '18px'}
                                         ),
@@ -145,10 +144,10 @@ app.layout = html.Div(
                                     children=[
                                         html.Div([
                                             dcc.Graph(figure=bad_graph),
-                                        ], id='bad-graph'),
-                                        html.Plaintext(id='explanation'),
-                                        html.Div(id='good-graph')
-                                    ]
+                                        ], id='bad-graph', style={'display': 'inline-block'}),
+                                        html.Plaintext(id='explanation', style={'display': 'inline-block'}),
+                                        html.Div(id='good-graph', style={'display': 'inline-block'})
+                                    ], style={'display': 'inline-block'}
                                 )
                             ]
                         )]
