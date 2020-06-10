@@ -16,6 +16,6 @@ def bad_graph():
         # marker_color=colors,
         hoverinfo='skip'
     )])
-    fig.update_layout(title_text='Zadłużenie', xaxis_title='Okres', yaxis_title='Zadłużenie')
+    fig.update_layout(title_text='Stan zadłużenia w kolejnych okresach 5-miesięcznych', xaxis_title='Okres', yaxis_title='Zadłużenie')
     fig.update_yaxes(range=[80, 122], tickvals=[85, 95, 105, 115], showgrid=False, zeroline=False)
     return fig

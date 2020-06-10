@@ -43,8 +43,8 @@ def good_graph():
                                                                )])
     fig.update_xaxes(range=[-0.6, 8.6])
     fig.update_yaxes(tickprefix="$")
-    fig.update_layout(title_text='Skumulowane zadłużenie w kolejnych okresach 5-miesięcznych',
-                      xaxis_title="Okres 5-miesięczny",
+    fig.update_layout(title_text='Stan zadłużenia w kolejnych okresach 5-miesięcznych',
+                      xaxis_title="Okres",
                       yaxis_title="Zadłużenie",
                       shapes=[
                           dict(

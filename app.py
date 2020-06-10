@@ -142,11 +142,14 @@ app.layout = html.Div(
                                 html.Div(
                                     id='pred-output',
                                     children=[
-                                        html.Div([
-                                            dcc.Graph(figure=bad_graph),
-                                        ], id='bad-graph', style={'display': 'inline-block'}),
-                                        html.Plaintext(id='explanation', style={'display': 'inline-block'}),
-                                        html.Div(id='good-graph', style={'display': 'inline-block'})
+                                        html.Div(
+                                            children=[
+                                                html.Div([
+                                                    dcc.Graph(figure=bad_graph),
+                                                ], id='bad-graph', style={'display': 'inline-block'}),
+                                                html.Div(id='good-graph', style={'display': 'inline-block'})]
+                                        ), 
+                                        html.Plaintext(id='explanation'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -182,7 +185,21 @@ def update_output(n_clicks, user_input, old_n_clicks):
         if user_input=="":
             return None, "Enter value you moron", str(n_clicks)
         else:
-            return dcc.Graph(figure=good_graph), "bla bla bla, explanation", str(n_clicks)
+            explanation = "W styczniu 2017 Graf Kowalski wziął pożyczkę wysokości 80$. Odsetki wysokości 1% na miesiąc. \n \
+                Oba wykresy przedstawiają stan zadłużenia Grafa, odnotowywany raz na 5 miesięcy począwszy od marca 2017 \n \
+                (2 miesiące od zaciągnięcia pożyczki) do lipca 2020. \n \n \
+                Autor lewego wykresu postanowił posortować oś X według nazw miesięcy, w których wypadały kolejne odnotowania stanu zadłużenia. \n \
+                Wprowadza to czytelnika w błąd, sugerując, że przedstawione zdarzenia następowały chronologicznie. \n \
+                Gubiąc faktyczną kolejność zdarzeń, a co za tym idzie rosnący charakter wykresu, użytkownik pomyśli, że Kowalski zaciąga kilkanaście \n \
+                pożyczek na miesiąc i losowo niektóre spłaca. Po uważniejszym przyjrzeniu się odbiorca zauważy co najwyżej, że brakuje kilku miesięcy (np. maja) \n \
+                i nie domyśli się co tak naprawdę wykres przedstawia. \n \n \
+                Co więcej autor wykresu uzał, że skoro pożyczka wynosiła 80$, a najwyższa wartość zadłużenia to 122$, \n \
+                dobrym pomysłem będzie przyjęcie tego przedziału za początek i koniec dla osi Y. \n \
+                Powoduje to, że po pierwsze nie wiadomo ile tak naprawdę wynosiło zadłużenie odnotowane w lipcu, \n \
+                a po drugie zaburza proporcje między słupkami. Na pierwszy rzut oka słupek 'Styczeń' \n \
+                jest 2 razy mniejszy niż słupek 'Listopad', co sugeruje, że zadłużenie w listopadzie było dwukrotnie większe niż w styczniu. \n \
+                Na prawym wykresie widzimy, że tak naprawdę wzrosło tylko ~1.11 razy."
+            return dcc.Graph(figure=good_graph), explanation, str(n_clicks)
     else:
         return None, "", old_n_clicks
 
