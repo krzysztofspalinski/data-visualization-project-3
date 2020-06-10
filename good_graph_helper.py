@@ -17,24 +17,24 @@ def good_graph():
                                    'Czerwiec', 'Listopad', 'Kwiecień',
                                    'Wrzesień', 'Luty', 'Lipiec']})
 
-    fig = go.Figure(data=[go.Bar(name='Pierwszy rok',
+    fig = go.Figure(data=[go.Bar(name='Rok - 2017',
                                  x=['I - Marzec', 'II - Sierpień'],
                                  y=[82, 86],
                                  text=[82, 86],
                                  textposition='auto'
-                                 ), go.Bar(name='Drugi rok',
+                                 ), go.Bar(name='Rok - 2018',
                                            x=['III - Styczeń',
                                                'IV - Czerwiec', 'V - Listopad'],
                                            y=[90, 95, 100],
                                            text=[90, 95, 100],
                                            textposition='auto'
-                                           ), go.Bar(name='Trzeci rok',
+                                           ), go.Bar(name='Rok - 2019',
                                                      x=['VI - Kwiecień',
                                                          'VII - Wrzesień'],
                                                      y=[105, 110],
                                                      text=[105, 110],
                                                      textposition='auto'
-                                                     ), go.Bar(name='Czwarty rok',
+                                                     ), go.Bar(name='Rok - 2020',
                                                                x=['VIII - Luty',
                                                                    'IX - Lipiec'],
                                                                y=[116, 122],
