@@ -5,6 +5,9 @@ import plotly.express as px
 import os
 import plotly.graph_objects as go
 from plotly.validators.scatter.marker import SymbolValidator
+import chart_studio.plotly as py
+import plotly.figure_factory as ff
+from heatmap_data_provider import getHeatmapData
 
 def bad_graph():
     # colors = ['lightslategray',] * 9
@@ -18,4 +21,11 @@ def bad_graph():
     )])
     fig.update_layout(title_text='Stan zadłużenia w kolejnych okresach 5-miesięcznych', xaxis_title='Okres', yaxis_title='Zadłużenie')
     fig.update_yaxes(range=[80, 122], tickvals=[85, 95, 105, 115], showgrid=False, zeroline=False)
+    return fig
+
+def bad_heatgraph(radius):    
+    px.set_mapbox_access_token("") # INSERT TOKEN
+    df = getHeatmapData()
+    fig = px.density_mapbox(df, lat="Lat", lon="Lon", z="Population", radius=radius, color_continuous_scale=['red', 'red', 'yellow', 'green', 'cyan', 'blue', 'blue'])
+    
     return fig

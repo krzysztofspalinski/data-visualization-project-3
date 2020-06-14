@@ -3,7 +3,9 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 import os
-
+import chart_studio.plotly as py
+import plotly.figure_factory as ff
+from heatmap_data_provider import getHeatmapData
 
 def good_graph():
     x = 80
@@ -92,4 +94,11 @@ def good_graph():
                               fillcolor="violet",
                           )
                       ])
+    return fig
+
+def good_heatgraph(radius):
+    px.set_mapbox_access_token("") # INSERT TOKEN
+    df = getHeatmapData()
+    fig = px.density_mapbox(df, lat="Lat", lon="Lon", z="Population", radius=radius, color_continuous_scale='rainbow')
+    
     return fig

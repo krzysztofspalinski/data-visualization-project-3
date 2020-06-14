@@ -12,8 +12,8 @@ from joblib import load
 import visdcc
 import base64
 
-from bad_graph_helper import bad_graph
-from good_graph_helper import good_graph
+from bad_graph_helper import bad_graph, bad_heatgraph
+from good_graph_helper import good_graph, good_heatgraph
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
@@ -27,6 +27,11 @@ prediction_image = base64.b64encode(
 
 bad_graph = bad_graph()
 good_graph = good_graph()
+bad_heatgraph = bad_heatgraph(10)
+good_heatgraph15 = good_heatgraph(15)
+good_heatgraph5 = good_heatgraph(5)
+good_heatgraph1 = good_heatgraph(1)
+good_heatgraph10 = good_heatgraph(10)
 
 app = dash.Dash(__name__, external_stylesheets=[
     dbc.themes.BOOTSTRAP,
@@ -155,8 +160,67 @@ app.layout = html.Div(
                             ]
                         )]
                     )
+                ),
+                html.Section(
+                    id='heatmap-section',
+                    children=html.Div(
+                        className='screen-height',
+                        children=[html.Div(
+                            id='heatmap',
+                            style={'text-align': 'center'},
+                            children=[
+                                html.Div(
+                                    style={'width': 'fit-content'},
+                                    children=[
+                                        html.H1(
+                                            id='some-header2',
+                                            children='W którym województwie pojawia się najwięcej informacji o wystąpieniu X?',
+                                            style={'font-weight': 'bold',
+                                                   'padding': '18px'}
+                                        ),
+                                        html.Plaintext("Wartość to ", style={
+                                            'display': 'inline-block', 'font-size': '12pt'}),
+                                        dcc.Input(id="input2", type="text", value="", placeholder="",
+                                                  style=dict(display='inline-block')),
+                                        html.Button(
+                                            'Check answer',
+                                            id="check-answer-button2",
+                                        ),
+                                        html.Div(id='number-of-clicks2',
+                                             style={'display': 'none'}, children='0')
+                                    ]
+                                ),
+                                html.Div(
+                                    id='pred-output2',
+                                    children=[
+                                        html.Div(
+                                            children=[
+                                                html.Div([
+                                                    dcc.Graph(figure=bad_heatgraph),
+                                                ], id='bad-graph2', style={'display': 'inline-block'}),
+                                                html.Div(id='good-heatmap1', style={'display': 'inline-block'}),
+                                                ]
+                                        ), 
+                                        html.Plaintext(id='explanation2'),
+                                    ], style={'display': 'inline-block'}
+                                ),
+                                html.Div(
+                                    id='pred-output3',
+                                    children=[
+                                        html.Div(
+                                            children=[
+                                                html.Div(id='good-heatmap2', style={'display': 'inline-block'}),
+                                                html.Div(id='good-heatmap3', style={'display': 'inline-block'}),
+                                                ]
+                                        ), 
+                                    ], style={'display': 'inline-block'}
+                                )
+                            ]
+                        )]
+                    )
                 )
             ]),
+            
         visdcc.Run_js(id='javascript',
                       run='''
                             new fullScroll({	
@@ -203,6 +267,28 @@ def update_output(n_clicks, user_input, old_n_clicks):
     else:
         return None, "", old_n_clicks
 
+@app.callback([
+    dash.dependencies.Output('good-heatmap1', 'children'),
+    dash.dependencies.Output('good-heatmap2', 'children'),
+    dash.dependencies.Output('good-heatmap3', 'children'),
+    dash.dependencies.Output('explanation2', 'children'),
+    dash.dependencies.Output('number-of-clicks2', 'children')],
+    [dash.dependencies.Input('check-answer-button2', 'n_clicks'),
+     dash.dependencies.Input('input2', 'value')],
+    [dash.dependencies.State('number-of-clicks2', 'children')])
+def update_output2(n_clicks, user_input, old_n_clicks):
+    if n_clicks is not None and n_clicks > int(old_n_clicks):
+        if user_input=="":
+            return None, "Enter value you moron", str(n_clicks)
+        else:
+            explanation = "Tworząc mapy cieplne zazwyczaj sugerujemy się tym, że kolory bliżej czerwonego oznaczają, że na danym obszarze jest zaobserwowanych więcej zjawisk. \n\
+                 Autor tego wykresu postanowił odwrócić kolory, co pomimo istnienia legendy, powoduje dezorientację u użytkownika końcowego. \n \
+                 Warto również zauważyć jak zmienia się odbiór wykresu w zależności od ustawienia stopnia rozmycia dla punktów na mapie. \n \
+                 Mapa cieplna bardzo dobrze pokazuje jak dane się rozkładają na obszarze całej Polski, ale jednocześnieciężko z niej odczytać szczegóły. \n \
+                 W przypadku pytań o konkretne województwo czy miejscowość, zamiast ogólnego obszaru, warto przemyśleć inne rodzaje wykresów."
+            return dcc.Graph(figure=good_heatgraph10), dcc.Graph(figure=good_heatgraph15), dcc.Graph(figure=good_heatgraph5), explanation, str(n_clicks)
+    else:
+        return None, "", old_n_clicks
 
 if __name__ == '__main__':
     app.run_server(debug=True)
