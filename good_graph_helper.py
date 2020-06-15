@@ -5,6 +5,7 @@ import plotly.express as px
 import os
 from plotly.subplots import make_subplots
 from data_generator_krzysztof import get_data
+from random import randint
 
 def barplot_good_graph():
     x = 80
@@ -331,3 +332,31 @@ def scatter_3d_good_graph(seed=42):
 	    fig['layout'][yaxis2]['range'] = [0, 150]
 	fig.update_layout(legend=dict(x=0, y=-.15), legend_orientation="h", title='Sprzedaż firm w latach 2010 - 2017')
 	return fig
+
+def piechart_good_graph():
+
+    def get_labels():
+        return ['Golf', 'Mustang', 'Octavia', 'Multipla', 'Focus']
+
+    def get_values(min, max):
+        return [round(randint(min, max) / 10) * 10 for _ in range(5)]
+
+    vals_labels = [x for x in sorted(zip(get_values(100, 300), get_labels()))]
+    labels = [x[1] for x in vals_labels]
+    vals = [x[0] for x in vals_labels]
+
+    fig = go.Figure(go.Bar(
+                x=vals,
+                y=labels,
+                orientation='h',
+                marker=dict(
+                    color='green'
+                ),
+                hoverinfo='skip'))
+    fig.update_layout(
+        xaxis=dict(
+            range=[0,300],
+            dtick=10
+        )
+    )
+    return fig

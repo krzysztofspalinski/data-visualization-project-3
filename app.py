@@ -12,8 +12,8 @@ from joblib import load
 import visdcc
 import base64
 
-from bad_graph_helper import barplot_bad_graph, scatter_bad_graph, scatter_3d_bad_graph
-from good_graph_helper import barplot_good_graph, scatter_good_graph, scatter_3d_good_graph
+from bad_graph_helper import barplot_bad_graph, scatter_bad_graph, scatter_3d_bad_graph, piechart_bad_graph
+from good_graph_helper import barplot_good_graph, scatter_good_graph, scatter_3d_good_graph, piechart_good_graph
 from utils_iris import iris_data
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -33,6 +33,8 @@ scatter_bad_graph = scatter_bad_graph(iris)
 scatter_good_graph = scatter_good_graph(iris)
 scatter_3d_bad_graph = scatter_3d_bad_graph()
 scatter_3d_good_graph = scatter_3d_good_graph()
+piechart_bad_graph = piechart_bad_graph()
+piechart_good_graph = piechart_good_graph()
 
 app = dash.Dash(__name__, external_stylesheets=[
     dbc.themes.BOOTSTRAP,
@@ -326,12 +328,64 @@ app.layout = html.Div(
                         )]
                     )
                 ),
+                html.Section(
+                    id='piechart-section',
+                    children=html.Div(
+                        className='screen-height',
+                        children=[html.Div(
+                            style={'text-align': 'center'},
+                            children=[
+                                html.Div(
+                                    children=[
+                                        html.H1(
+                                            children='Pytanie',
+                                            style={'font-weight': 'bold',
+                                                   'padding': '10px'}
+                                        ),
+                                        html.Div(
+                                            children=[
+                                                dcc.RadioItems(id='piechart-input',
+                                                                options = [
+                                                                    {'label': ' Odp a', 'value': 'a'},
+                                                                    {'label': ' Odp b', 'value': 'b'},
+                                                                    {'label': ' Odp c', 'value': 'c'},
+                                                                    ],
+                                                                value = ""),
+                                                html.P(id="piechart-wrong-answer", children="Źle!", style={'display': 'none'}),
+                                                html.P(id="piechart-good-answer", children="Dobrze!", style={'display': 'none'})
+                                            ]
+                                        ),
+                                        
+                                        html.Button(
+                                            'Sprawdź odpowiedź',
+                                            id="piechart-check-answer-button",
+                                        ),
+                                        html.Div(id='piechart-number-of-clicks',
+                                             style={'display': 'none'}, children='0')
+                                    ]
+                                ),
+                                html.Div(
+                                    children=[
+                                        html.Div(
+                                            children=[
+                                                html.Div([
+                                                    dcc.Graph(figure=piechart_bad_graph),
+                                                ], id='piechart-bad-graph', style={'display': 'inline-block'}),
+                                                html.Div(id='piechart-good-graph', style={'display': 'inline-block'})]
+                                        ), 
+                                        html.Plaintext(id='piechart-explanation'),
+                                    ], style={'display': 'inline-block'}
+                                )
+                            ]
+                        )]
+                    )
+                ),
             ]),
         visdcc.Run_js(id='javascript',
                       run='''
                             new fullScroll({	
                                 mainElement: 'main', 
-                                sections:['title-section', 'barplot-section', 'scatter-section', 'scatter-3d-section'],
+                                sections:['title-section', 'barplot-section', 'scatter-section', 'scatter-3d-section', 'piechart-section'],
                                 displayDots: true,
                                 dotsPosition: 'right',
                                 animateTime: 0.7,
@@ -376,7 +430,6 @@ def update_barplot_output(n_clicks, user_input, old_n_clicks):
                 return dcc.Graph(figure=barplot_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
-
 
 @app.callback([
     dash.dependencies.Output('scatter-good-graph', 'children'),
@@ -438,6 +491,27 @@ def update_scatter_3d_output(n_clicks, user_input, old_n_clicks):
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
+@app.callback([
+    dash.dependencies.Output('piechart-good-graph', 'children'),
+    dash.dependencies.Output('piechart-explanation', 'children'),
+    dash.dependencies.Output('piechart-wrong-answer', 'style'),
+    dash.dependencies.Output('piechart-good-answer', 'style'),
+    dash.dependencies.Output('piechart-number-of-clicks', 'children')],
+    [dash.dependencies.Input('piechart-check-answer-button', 'n_clicks'),
+     dash.dependencies.Input('piechart-input', 'value'),],
+    [dash.dependencies.State('piechart-number-of-clicks', 'children')])
+def update_piechart_output(n_clicks, user_input, old_n_clicks):
+    if n_clicks is not None and n_clicks > int(old_n_clicks):
+        if user_input=="":
+            return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
+        else:
+            explanation = "Wyjaśnienie"
+            if user_input=="b":
+                return dcc.Graph(figure=piechart_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+            else:
+                return dcc.Graph(figure=piechart_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+    else:
+        return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
 
 if __name__ == '__main__':

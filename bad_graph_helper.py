@@ -6,6 +6,7 @@ import os
 import plotly.graph_objects as go
 from plotly.validators.scatter.marker import SymbolValidator
 from data_generator_krzysztof import get_data
+from random import randint
 
 def barplot_bad_graph():
     # colors = ['lightslategray',] * 9
@@ -117,3 +118,21 @@ def scatter_3d_bad_graph(seed=42):
 	fig_dict = dict(data=data, layout=layout)
 	fig = go.Figure(fig_dict)   
 	return fig
+
+def piechart_bad_graph():
+
+    def get_labels():
+        return ['Golf', 'Mustang', 'Octavia', 'Multipla', 'Focus']
+
+    def get_values(min, max):
+        return [round(randint(min, max) / 10) * 10 for _ in range(5)]
+
+
+    colors = ['#2afe38', '#22eb2f', '#1ad827', '#13c71e', '#0bb416']
+    vals = get_values(100, 300)
+    fig = go.Figure(data=[go.Pie(labels=get_labels(),
+                                values=vals)])
+    fig.update_traces(hoverinfo='skip', textinfo='label', textfont_size=16,
+                    marker=dict(colors=colors))
+    fig.update_layout(title_text=f'Liczba koni mechanicznych (suma {sum(vals)})')
+    return fig
