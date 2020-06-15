@@ -6,6 +6,7 @@ import os
 from plotly.subplots import make_subplots
 from data_generator_krzysztof import get_data
 from random import randint
+# from heatmap_data_provider import getHeatmapData
 
 def barplot_good_graph():
     x = 80
@@ -360,3 +361,10 @@ def piechart_good_graph():
         )
     )
     return fig
+
+# def heatmap_good_graph(radius):
+#     px.set_mapbox_access_token("") # INSERT TOKEN
+#     df = getHeatmapData()
+#     fig = px.density_mapbox(df, lat="Lat", lon="Lon", z="Population", radius=radius, color_continuous_scale='rainbow')
+    
+#     return fig

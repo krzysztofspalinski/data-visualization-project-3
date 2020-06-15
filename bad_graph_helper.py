@@ -7,6 +7,10 @@ import plotly.graph_objects as go
 from plotly.validators.scatter.marker import SymbolValidator
 from data_generator_krzysztof import get_data
 from random import randint
+from plotly.validators.scatter.marker import SymbolValidator
+import chart_studio.plotly as py
+import plotly.figure_factory as ff
+# from heatmap_data_provider import getHeatmapData
 
 def barplot_bad_graph():
     # colors = ['lightslategray',] * 9
@@ -136,3 +140,10 @@ def piechart_bad_graph():
                     marker=dict(colors=colors))
     fig.update_layout(title_text=f'Liczba koni mechanicznych (suma {sum(vals)})')
     return fig
+
+# def heatmap_bad_graph(radius):    
+#     px.set_mapbox_access_token("") # INSERT TOKEN
+#     df = getHeatmapData()
+#     fig = px.density_mapbox(df, lat="Lat", lon="Lon", z="Population", radius=radius, color_continuous_scale=['red', 'red', 'yellow', 'green', 'cyan', 'blue', 'blue'])
+    
+#     return fig
