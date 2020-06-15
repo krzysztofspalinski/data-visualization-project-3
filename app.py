@@ -12,8 +12,9 @@ from joblib import load
 import visdcc
 import base64
 
-from bad_graph_helper import bad_graph
-from good_graph_helper import good_graph
+from bad_graph_helper import barplot_bad_graph, scatter_bad_graph
+from good_graph_helper import barplot_good_graph, scatter_good_graph
+from utils_iris import iris_data
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
@@ -25,8 +26,11 @@ prediction_image_filename = os.path.join(
 prediction_image = base64.b64encode(
     open(prediction_image_filename, 'rb').read())
 
-bad_graph = bad_graph()
-good_graph = good_graph()
+barplot_bad_graph = barplot_bad_graph()
+barplot_good_graph = barplot_good_graph()
+iris, correctAnwsers = iris_data()
+scatter_bad_graph = scatter_bad_graph(iris)
+scatter_good_graph = scatter_good_graph(iris)
 
 app = dash.Dash(__name__, external_stylesheets=[
     dbc.themes.BOOTSTRAP,
@@ -126,7 +130,7 @@ app.layout = html.Div(
                                         ),
                                         html.Div(
                                             children=[
-                                                dcc.RadioItems(id='bar-plot-input',
+                                                dcc.RadioItems(id='barplot-input',
                                                                 options = [
                                                                     {'label': ' 2-krotnie', 'value': 'a'},
                                                                     {'label': ' O około 10%', 'value': 'b'},
@@ -151,11 +155,117 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=bad_graph),
+                                                    dcc.Graph(figure=barplot_bad_graph),
                                                 ], id='barplot-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='barplot-good-graph', style={'display': 'inline-block'})]
                                         ), 
                                         html.Plaintext(id='barplot-explanation'),
+                                    ], style={'display': 'inline-block'}
+                                )
+                            ]
+                        )]
+                    )
+                ),
+                html.Section(
+                    id='scatter-section',
+                    children=html.Div(
+                        className='screen-height',
+                        children=[html.Div(
+                            style={'text-align': 'center'},
+                            children=[
+                                html.Div(
+                                    children=[
+                                        html.P('Mimo, że zazwyczaj dodawanie cech jest wygodną formą zwiększenia informacji, \
+                                                ich nadmiar bywa zgubny. Poniższy wykres przedstawia znany w świecie uczenia maszynowego \
+                                                zbiór irysów. Oś x przedstawia długość kielicha, oś y szerokość kielicha, kolor oznacza długość \
+                                                płatka, natomiast wielkość punktów reprezentuje szerokość płatka. Poszczególne gatunki irysów \
+                                                oznaczone  są różnymi symbolami.'),
+                                        html.P(
+                                            children='Twoim celem jest przypisanie punktów oznaczonych symbolem X \
+                                                do odpowiedniego gatunku kwiatu (setosa, virginica, versicolor). \
+                                                Porównaj wszystkie cztery cechy obiektów i sprawdź ile udało Ci się poprawnie odszyfrować!',
+                                            style={'font-weight': 'bold'}
+                                        ),
+                                        html.Div(
+                                            children=[
+                                                html.P(children='Punkt 1 ',style={'display':'inline-block'} ),
+                                                dcc.Dropdown(
+                                                    id='scatter-input1',
+                                                    options=[
+                                                        {'label': 'setosa', 'value': 'setosa'},
+                                                        {'label': 'virginica', 'value': 'virginica'},
+                                                        {'label': 'versicolor', 'value': 'versicolor'}
+                                                    ],
+                                                    value='',
+                                                    style={'width':'100px', 'display':'inline-block'}
+                                                ),
+                                                html.P(children=', punkt 2 ',style={'display':'inline-block'} ),
+                                                dcc.Dropdown(
+                                                    id='scatter-input2',
+                                                    options=[
+                                                        {'label': 'setosa', 'value': 'setosa'},
+                                                        {'label': 'virginica', 'value': 'virginica'},
+                                                        {'label': 'versicolor', 'value': 'versicolor'}
+                                                    ],
+                                                    value='',
+                                                    style={'width':'100px', 'display':'inline-block'}
+                                                ),
+                                                html.P(children=', punkt 3 ',style={'display':'inline-block'} ),
+                                                dcc.Dropdown(
+                                                    id='scatter-input3',
+                                                    options=[
+                                                        {'label': 'setosa', 'value': 'setosa'},
+                                                        {'label': 'virginica', 'value': 'virginica'},
+                                                        {'label': 'versicolor', 'value': 'versicolor'}
+                                                    ],
+                                                    value='',
+                                                    style={'width':'100px', 'display':'inline-block'}
+                                                ),
+                                                html.P(children=', punkt 4 ',style={'display':'inline-block'} ),
+                                                dcc.Dropdown(
+                                                    id='scatter-input4',
+                                                    options=[
+                                                        {'label': 'setosa', 'value': 'setosa'},
+                                                        {'label': 'virginica', 'value': 'virginica'},
+                                                        {'label': 'versicolor', 'value': 'versicolor'}
+                                                    ],
+                                                    value='',
+                                                    style={'width':'100px', 'display':'inline-block'}
+                                                ),
+                                                html.P(children=', punkt 5',style={'display':'inline-block'} ),
+                                                dcc.Dropdown(
+                                                    id='scatter-input5',
+                                                    options=[
+                                                        {'label': 'setosa', 'value': 'setosa'},
+                                                        {'label': 'virginica', 'value': 'virginica'},
+                                                        {'label': 'versicolor', 'value': 'versicolor'}
+                                                    ],
+                                                    value='',
+                                                    style={'width':'100px', 'display':'inline-block'}
+                                                ),
+                                                html.P(id="scatter-wrong-answer", children="Źle!", style={'display': 'none'}),
+                                                html.P(id="scatter-good-answer", children="Dobrze!", style={'display': 'none'})
+                                            ]
+                                        ),
+                                        
+                                        html.Button(
+                                            'Sprawdź odpowiedź',
+                                            id="scatter-check-answer-button",
+                                        ),
+                                        html.Div(id='scatter-number-of-clicks',
+                                             style={'display': 'none'}, children='0')
+                                    ]
+                                ),
+                                html.Div(
+                                    children=[
+                                        html.Div(
+                                            children=[
+                                                html.Div([
+                                                    dcc.Graph(figure=scatter_bad_graph),
+                                                ], id='scatter-bad-graph', style={'display': 'inline-block'}),
+                                                html.Div(id='scatter-good-graph', style={'display': 'inline-block'})]
+                                        ), 
+                                        html.Plaintext(id='scatter-explanation'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -167,7 +277,7 @@ app.layout = html.Div(
                       run='''
                             new fullScroll({	
                                 mainElement: 'main', 
-                                sections:['title-section', 'barplot-section'],
+                                sections:['title-section', 'barplot-section', 'scatter-section'],
                                 displayDots: true,
                                 dotsPosition: 'right',
                                 animateTime: 0.7,
@@ -178,7 +288,6 @@ app.layout = html.Div(
     ]
 )
 
-
 @app.callback([
     dash.dependencies.Output('barplot-good-graph', 'children'),
     dash.dependencies.Output('barplot-explanation', 'children'),
@@ -186,9 +295,9 @@ app.layout = html.Div(
     dash.dependencies.Output('barplot-good-answer', 'style'),
     dash.dependencies.Output('barplot-number-of-clicks', 'children')],
     [dash.dependencies.Input('barplot-check-answer-button', 'n_clicks'),
-     dash.dependencies.Input('bar-plot-input', 'value')],
+     dash.dependencies.Input('barplot-input', 'value'),],
     [dash.dependencies.State('barplot-number-of-clicks', 'children')])
-def update_output(n_clicks, user_input, old_n_clicks):
+def update_barplot_output(n_clicks, user_input, old_n_clicks):
     if n_clicks is not None and n_clicks > int(old_n_clicks):
         if user_input=="":
             return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
@@ -208,9 +317,48 @@ def update_output(n_clicks, user_input, old_n_clicks):
                 jest 2 razy mniejszy niż słupek 'Listopad', co sugeruje, że zadłużenie w listopadzie było dwukrotnie większe niż w styczniu. \n \
                 Na prawym wykresie widzimy, że tak naprawdę wzrosło tylko ~1.11 razy."
             if user_input=="b":
-                return dcc.Graph(figure=good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(figure=barplot_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(figure=barplot_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+    else:
+        return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
+
+
+@app.callback([
+    dash.dependencies.Output('scatter-good-graph', 'children'),
+    dash.dependencies.Output('scatter-explanation', 'children'),
+    dash.dependencies.Output('scatter-wrong-answer', 'style'),
+    dash.dependencies.Output('scatter-good-answer', 'style'),
+    dash.dependencies.Output('scatter-number-of-clicks', 'children')],
+    [dash.dependencies.Input('scatter-check-answer-button', 'n_clicks'),
+     dash.dependencies.Input('scatter-input1', 'value'),
+     dash.dependencies.Input('scatter-input2', 'value'),
+     dash.dependencies.Input('scatter-input3', 'value'),
+     dash.dependencies.Input('scatter-input4', 'value'),
+     dash.dependencies.Input('scatter-input5', 'value')],
+    [dash.dependencies.State('scatter-number-of-clicks', 'children')])
+def update_scatter_output(n_clicks, input1, input2, input3, input4, input5, old_n_clicks):
+    if n_clicks is not None and n_clicks > int(old_n_clicks):
+        if input1=="" or input2=="" or input3=="" or input4=="" or input5=="":
+            return None, "Zaznacz wszystkie odpowiedzi!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
+        else:
+            explanation = "I jak poszło? Czy zgodzisz się, że poprzedni wykres był chaotyczny? \n \
+                Problemem poprzedniego wykresu jest jego wielowymiarowość, aż 4 zmienne (w dodatku ciągłe!) \n \
+                są przedstawione graficznie, co powoduje, że każda z nich jest trudna do zinterpretowania. \n \
+                Dla odmiany spójrz na poniższe dwa wykresy. W obecnej sytuacji wszystko jest dużo czytelniejsze. \n \
+                Czy teraz uda Ci się poprawnie zidentyfikować te same obiekty? Dodatkowo korzystnie na czytelność \n \
+                wykresu wpłynęło dostosowanie osi. W poprzednim wypadku około 60% wykersu było puste, obserwacje były \n \
+                w jednym miejscu co jeszcze bardziej utrudniło interpretację. Teraz osie są przycięte, tak aby maksymalnie \n \
+                wykorzystać potencjał wykresów. Są też odpowiednio podpisane, w związku z czym nie zgubisz żadnej informacji."
+            if correctAnwsers[1]==input1 and \
+                correctAnwsers[2]==input2 and \
+                correctAnwsers[3]==input3 and \
+                correctAnwsers[4]==input4 and \
+                correctAnwsers[5]==input5:
+                
+                return dcc.Graph(figure=scatter_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+            else:
+                return dcc.Graph(figure=scatter_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
