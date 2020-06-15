@@ -111,45 +111,51 @@ app.layout = html.Div(
                     )
                 ),
                 html.Section(
-                    id='prediction-section',
+                    id='barplot-section',
                     children=html.Div(
                         className='screen-height',
                         children=[html.Div(
-                            id='prediction',
                             style={'text-align': 'center'},
                             children=[
                                 html.Div(
-                                    style={'width': 'fit-content'},
                                     children=[
                                         html.H1(
-                                            id='some-header',
                                             children='Ilukrotnie wzrosło zadłużenie między okresem styczniowym a listopadowym?',
                                             style={'font-weight': 'bold',
-                                                   'padding': '18px'}
+                                                   'padding': '10px'}
                                         ),
-                                        html.Plaintext("Wartość to ", style={
-                                            'display': 'inline-block', 'font-size': '12pt'}),
-                                        dcc.Input(id="input1", type="text", value="", placeholder="",
-                                                  style=dict(display='inline-block')),
+                                        html.Div(
+                                            children=[
+                                                dcc.RadioItems(id='bar-plot-input',
+                                                                options = [
+                                                                    {'label': ' 2-krotnie', 'value': 'a'},
+                                                                    {'label': ' O około 10%', 'value': 'b'},
+                                                                    {'label': ' Nie da się określić', 'value': 'c'},
+                                                                    ],
+                                                                value = ""),
+                                                html.P(id="barplot-wrong-answer", children="Źle!", style={'display': 'none'}),
+                                                html.P(id="barplot-good-answer", children="Dobrze!", style={'display': 'none'})
+                                            ]
+                                        ),
+                                        
                                         html.Button(
-                                            'Check answer',
-                                            id="check-answer-button",
+                                            'Sprawdź odpowiedź',
+                                            id="barplot-check-answer-button",
                                         ),
-                                        html.Div(id='number-of-clicks',
+                                        html.Div(id='barplot-number-of-clicks',
                                              style={'display': 'none'}, children='0')
                                     ]
                                 ),
                                 html.Div(
-                                    id='pred-output',
                                     children=[
                                         html.Div(
                                             children=[
                                                 html.Div([
                                                     dcc.Graph(figure=bad_graph),
-                                                ], id='bad-graph', style={'display': 'inline-block'}),
-                                                html.Div(id='good-graph', style={'display': 'inline-block'})]
+                                                ], id='barplot-bad-graph', style={'display': 'inline-block'}),
+                                                html.Div(id='barplot-good-graph', style={'display': 'inline-block'})]
                                         ), 
-                                        html.Plaintext(id='explanation'),
+                                        html.Plaintext(id='barplot-explanation'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -161,7 +167,7 @@ app.layout = html.Div(
                       run='''
                             new fullScroll({	
                                 mainElement: 'main', 
-                                sections:['title-section', 'prediction-section'],
+                                sections:['title-section', 'barplot-section'],
                                 displayDots: true,
                                 dotsPosition: 'right',
                                 animateTime: 0.7,
@@ -174,16 +180,18 @@ app.layout = html.Div(
 
 
 @app.callback([
-    dash.dependencies.Output('good-graph', 'children'),
-    dash.dependencies.Output('explanation', 'children'),
-    dash.dependencies.Output('number-of-clicks', 'children')],
-    [dash.dependencies.Input('check-answer-button', 'n_clicks'),
-     dash.dependencies.Input('input1', 'value')],
-    [dash.dependencies.State('number-of-clicks', 'children')])
+    dash.dependencies.Output('barplot-good-graph', 'children'),
+    dash.dependencies.Output('barplot-explanation', 'children'),
+    dash.dependencies.Output('barplot-wrong-answer', 'style'),
+    dash.dependencies.Output('barplot-good-answer', 'style'),
+    dash.dependencies.Output('barplot-number-of-clicks', 'children')],
+    [dash.dependencies.Input('barplot-check-answer-button', 'n_clicks'),
+     dash.dependencies.Input('bar-plot-input', 'value')],
+    [dash.dependencies.State('barplot-number-of-clicks', 'children')])
 def update_output(n_clicks, user_input, old_n_clicks):
     if n_clicks is not None and n_clicks > int(old_n_clicks):
         if user_input=="":
-            return None, "Enter value you moron", str(n_clicks)
+            return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
             explanation = "W styczniu 2017 Graf Kowalski wziął pożyczkę wysokości 80$. Odsetki wysokości 1% na miesiąc. \n \
                 Oba wykresy przedstawiają stan zadłużenia Grafa, odnotowywany raz na 5 miesięcy począwszy od marca 2017 \n \
@@ -199,9 +207,12 @@ def update_output(n_clicks, user_input, old_n_clicks):
                 a po drugie zaburza proporcje między słupkami. Na pierwszy rzut oka słupek 'Styczeń' \n \
                 jest 2 razy mniejszy niż słupek 'Listopad', co sugeruje, że zadłużenie w listopadzie było dwukrotnie większe niż w styczniu. \n \
                 Na prawym wykresie widzimy, że tak naprawdę wzrosło tylko ~1.11 razy."
-            return dcc.Graph(figure=good_graph), explanation, str(n_clicks)
+            if user_input=="b":
+                return dcc.Graph(figure=good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+            else:
+                return dcc.Graph(figure=good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
     else:
-        return None, "", old_n_clicks
+        return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
 
 if __name__ == '__main__':
