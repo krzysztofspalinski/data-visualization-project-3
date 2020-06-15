@@ -12,8 +12,8 @@ from joblib import load
 import visdcc
 import base64
 
-from bad_graph_helper import barplot_bad_graph, scatter_bad_graph
-from good_graph_helper import barplot_good_graph, scatter_good_graph
+from bad_graph_helper import barplot_bad_graph, scatter_bad_graph, scatter_3d_bad_graph
+from good_graph_helper import barplot_good_graph, scatter_good_graph, scatter_3d_good_graph
 from utils_iris import iris_data
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -31,6 +31,8 @@ barplot_good_graph = barplot_good_graph()
 iris, correctAnwsers = iris_data()
 scatter_bad_graph = scatter_bad_graph(iris)
 scatter_good_graph = scatter_good_graph(iris)
+scatter_3d_bad_graph = scatter_3d_bad_graph()
+scatter_3d_good_graph = scatter_3d_good_graph()
 
 app = dash.Dash(__name__, external_stylesheets=[
     dbc.themes.BOOTSTRAP,
@@ -271,13 +273,65 @@ app.layout = html.Div(
                             ]
                         )]
                     )
-                )
+                ),
+                html.Section(
+                    id='scatter-3d-section',
+                    children=html.Div(
+                        className='screen-height',
+                        children=[html.Div(
+                            style={'text-align': 'center'},
+                            children=[
+                                html.Div(
+                                    children=[
+                                        html.H1(
+                                            children='Pytanie',
+                                            style={'font-weight': 'bold',
+                                                   'padding': '10px'}
+                                        ),
+                                        html.Div(
+                                            children=[
+                                                dcc.RadioItems(id='scatter-3d-input',
+                                                                options = [
+                                                                    {'label': ' Odp a', 'value': 'a'},
+                                                                    {'label': ' Odp b', 'value': 'b'},
+                                                                    {'label': ' Odp c', 'value': 'c'},
+                                                                    ],
+                                                                value = ""),
+                                                html.P(id="scatter-3d-wrong-answer", children="Źle!", style={'display': 'none'}),
+                                                html.P(id="scatter-3d-good-answer", children="Dobrze!", style={'display': 'none'})
+                                            ]
+                                        ),
+                                        
+                                        html.Button(
+                                            'Sprawdź odpowiedź',
+                                            id="scatter-3d-check-answer-button",
+                                        ),
+                                        html.Div(id='scatter-3d-number-of-clicks',
+                                             style={'display': 'none'}, children='0')
+                                    ]
+                                ),
+                                html.Div(
+                                    children=[
+                                        html.Div(
+                                            children=[
+                                                html.Div([
+                                                    dcc.Graph(figure=scatter_3d_bad_graph),
+                                                ], id='scatter-3d-bad-graph', style={'display': 'inline-block'}),
+                                                html.Div(id='scatter-3d-good-graph', style={'display': 'inline-block'})]
+                                        ), 
+                                        html.Plaintext(id='scatter-3d-explanation'),
+                                    ], style={'display': 'inline-block'}
+                                )
+                            ]
+                        )]
+                    )
+                ),
             ]),
         visdcc.Run_js(id='javascript',
                       run='''
                             new fullScroll({	
                                 mainElement: 'main', 
-                                sections:['title-section', 'barplot-section', 'scatter-section'],
+                                sections:['title-section', 'barplot-section', 'scatter-section', 'scatter-3d-section'],
                                 displayDots: true,
                                 dotsPosition: 'right',
                                 animateTime: 0.7,
@@ -361,6 +415,29 @@ def update_scatter_output(n_clicks, input1, input2, input3, input4, input5, old_
                 return dcc.Graph(figure=scatter_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
+
+@app.callback([
+    dash.dependencies.Output('scatter-3d-good-graph', 'children'),
+    dash.dependencies.Output('scatter-3d-explanation', 'children'),
+    dash.dependencies.Output('scatter-3d-wrong-answer', 'style'),
+    dash.dependencies.Output('scatter-3d-good-answer', 'style'),
+    dash.dependencies.Output('scatter-3d-number-of-clicks', 'children')],
+    [dash.dependencies.Input('scatter-3d-check-answer-button', 'n_clicks'),
+     dash.dependencies.Input('scatter-3d-input', 'value'),],
+    [dash.dependencies.State('scatter-3d-number-of-clicks', 'children')])
+def update_scatter_3d_output(n_clicks, user_input, old_n_clicks):
+    if n_clicks is not None and n_clicks > int(old_n_clicks):
+        if user_input=="":
+            return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
+        else:
+            explanation = "Wyjaśnienie"
+            if user_input=="b":
+                return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+            else:
+                return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+    else:
+        return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
+
 
 
 if __name__ == '__main__':
