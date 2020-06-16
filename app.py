@@ -346,7 +346,7 @@ app.layout = html.Div(
                                 html.Div(
                                     children=[
                                         html.H1(
-                                            children='Pytanie',
+                                            children='W którym roku Ford Focus kosztował najwięcej?',
                                             style={'font-weight': 'bold',
                                                    'padding': '10px'}
                                         ),
@@ -354,9 +354,9 @@ app.layout = html.Div(
                                             children=[
                                                 dcc.RadioItems(id='piechart-input',
                                                                 options = [
-                                                                    {'label': ' Odp a', 'value': 'a'},
-                                                                    {'label': ' Odp b', 'value': 'b'},
-                                                                    {'label': ' Odp c', 'value': 'c'},
+                                                                    {'label': '2014', 'value': 'a'},
+                                                                    {'label': '2015', 'value': 'b'},
+                                                                    {'label': '2016', 'value': 'c'},
                                                                     ],
                                                                 value = ""),
                                                 html.P(id="piechart-wrong-answer", children="Źle!", style={'display': 'none'}),
@@ -576,7 +576,11 @@ def update_piechart_output(n_clicks, user_input, old_n_clicks):
         if user_input=="":
             return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "Wyjaśnienie"
+            explanation = "Problemem w niepoprawnej wizualizacji jest błędne wykorzystanie wykresów kołowych. Ponieważ suma cen zmienia się, \n \
+                można odnieść mylne wrażenie, że w 2016 roku Focus kosztował drożej niż w 2015 roku. Kąty w wykresach kołowych porównuje \n \
+                się również trudniej w porównaniu do wysokości słupków w wykresie słupkowym. Oprócz tego, w przeciwieństwie do błędnego \n \
+                wykresu, oznaczenia cen dla poszczególnych lat w poprawnym wykresie występują koło siebie. Percepcję utrudniają dodatkowo \n \
+                zlewające się kolory."
             if user_input=="b":
                 return dcc.Graph(figure=piechart_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
             else:

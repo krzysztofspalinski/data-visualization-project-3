@@ -7,6 +7,7 @@ from plotly.subplots import make_subplots
 from data_generator_krzysztof import get_data
 from random import randint
 from heatmap_data_provider import getHeatmapData
+from pie_get_data import get_pie_data
 
 def barplot_good_graph():
     x = 80
@@ -335,35 +336,20 @@ def scatter_3d_good_graph(seed=42):
 	return fig
 
 def piechart_good_graph():
-
-    def get_labels():
-        return ['Golf', 'Mustang', 'Octavia', 'Multipla', 'Focus']
-
-    def get_values(min, max):
-        return [round(randint(min, max) / 10) * 10 for _ in range(5)]
-
-    vals_labels = [x for x in sorted(zip(get_values(100, 300), get_labels()))]
-    labels = [x[1] for x in vals_labels]
-    vals = [x[0] for x in vals_labels]
-
-    fig = go.Figure(go.Bar(
-                x=vals,
-                y=labels,
-                orientation='h',
-                marker=dict(
-                    color='green'
-                ),
-                hoverinfo='skip'))
-    fig.update_layout(
-        xaxis=dict(
-            range=[0,300],
-            dtick=10
-        )
-    )
+    brands = get_pie_data(2014)['brand']
+    
+    fig = go.Figure(data=[
+        go.Bar(name='Rok 2014', x=brands, y=get_pie_data(2014)['price']),
+        go.Bar(name='Rok 2015', x=brands, y=get_pie_data(2015)['price']),
+        go.Bar(name='Rok 2016', x=brands, y=get_pie_data(2016)['price'])
+    ])
+    # Change the bar mode
+    fig.update_layout(barmode='group', yaxis_tickformat='d', title_text='Ceny poszczególnych marek samochodów w latach 2014-2016', yaxis_title='Cena w zł')
+    fig.show()
     return fig
 
 def heatmap_good_graph(radius):
-    px.set_mapbox_access_token("") # INSERT TOKEN
+    px.set_mapbox_access_token("pk.eyJ1IjoicHJlc3RpIiwiYSI6ImNrYmR5c2dheTBnYnYyc3FlbzYwNG1oc3QifQ.UvQIxOoMc-UkTfNH4V5vFQ") # INSERT TOKEN
     df = getHeatmapData()
     fig = px.density_mapbox(df, lat="Lat", lon="Lon", z="Population", radius=radius, color_continuous_scale='rainbow')
     
