@@ -486,9 +486,6 @@ def update_barplot_output(n_clicks, user_input, old_n_clicks):
                 (2 miesiące od zaciągnięcia pożyczki) do lipca 2020. \n \n \
                 Autor lewego wykresu postanowił posortować oś X według nazw miesięcy, w których wypadały kolejne odnotowania stanu zadłużenia. \n \
                 Wprowadza to czytelnika w błąd, sugerując, że przedstawione zdarzenia następowały chronologicznie. \n \
-                Gubiąc faktyczną kolejność zdarzeń, a co za tym idzie rosnący charakter wykresu, użytkownik pomyśli, że Kowalski zaciąga kilkanaście \n \
-                pożyczek na miesiąc i losowo niektóre spłaca. Po uważniejszym przyjrzeniu się odbiorca zauważy co najwyżej, że brakuje kilku miesięcy (np. maja) \n \
-                i nie domyśli się co tak naprawdę wykres przedstawia. \n \n \
                 Co więcej autor wykresu uznał, że skoro pożyczka wynosiła 80$, a najwyższa wartość zadłużenia to 122$, \n \
                 dobrym pomysłem będzie przyjęcie tego przedziału za początek i koniec dla osi Y. \n \
                 Powoduje to, że po pierwsze nie wiadomo ile tak naprawdę wynosiło zadłużenie odnotowane w lipcu, \n \
