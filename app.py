@@ -294,7 +294,7 @@ app.layout = html.Div(
                                 html.Div(
                                     children=[
                                         html.H1(
-                                            children='Pytanie',
+                                            children='W Firmie 3, który produkt miał większą sprzedaż w 2014 roku?',
                                             style={'font-weight': 'bold',
                                                    'padding': '10px'}
                                         ),
@@ -302,9 +302,9 @@ app.layout = html.Div(
                                             children=[
                                                 dcc.RadioItems(id='scatter-3d-input',
                                                                 options = [
-                                                                    {'label': ' Odp a', 'value': 'a'},
-                                                                    {'label': ' Odp b', 'value': 'b'},
-                                                                    {'label': ' Odp c', 'value': 'c'},
+                                                                    {'label': ' Produkt A   ', 'value': 'a'},
+                                                                    {'label': ' Produkt B   ', 'value': 'b'},
+                                                                    {'label': ' Sprzedaż obu produktów była taka sama ', 'value': 'c'},
                                                                     ],
                                                                 value = ""),
                                                 html.P(id="scatter-3d-wrong-answer", children="Źle!", style={'display': 'none'}),
@@ -554,8 +554,14 @@ def update_scatter_3d_output(n_clicks, user_input, old_n_clicks):
         if user_input=="":
             return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "Wyjaśnienie"
-            if user_input=="b":
+            explanation = "Wykresy 3D prawie nigdy nie są dobrym wyborem. Mimo że często wyglądają bardzo efektownie, \n \
+utrudniają one odczytywanie danych z wykresów. W przypadku kiedy dane dotyczą sprzedaży kilku \n \
+produktów z wielu firm, umieszczenie ich wszystkich na jednym wykresie nie jest optymalnym rozwiązaniem. \n \
+Dodatkowym utrudnieniem jest brak grupowania legendy. \n \n \
+Cztery osobne wykresy pozwoliły na przedstawienie tych danych w taki sposób, że porównywanie sprzedaży \n \
+produktów w obrębie jednej firmy jest ułatwione. W przypadku gdyby istotne było porównywanie wyników \n \
+pomiędzy różnymi firmami, należałoby rozważyć inny typ wykresu. "
+            if user_input=="a":
                 return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
             else:
                 return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
