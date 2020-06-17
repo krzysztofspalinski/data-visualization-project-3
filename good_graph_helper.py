@@ -349,3 +349,18 @@ def heatmap_good_graph(radius):
     fig = px.density_mapbox(df, lat="Lat", lon="Lon", z="Population", radius=radius, color_continuous_scale='rainbow')
     
     return fig
+
+def heatmap_good_bargraph():
+    df = getHeatmapData()
+    counts = df['Voivodeship'].value_counts()
+    print(counts)
+
+    fig = go.Figure(go.Bar(
+                x=counts.index,
+                y=counts.values,
+                marker=dict(
+                    color='green'
+                ),
+                hoverinfo='skip'))
+
+    return fig

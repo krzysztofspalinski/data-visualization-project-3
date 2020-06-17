@@ -15,7 +15,7 @@ import base64
 from bad_graph_helper import barplot_bad_graph, scatter_bad_graph, scatter_3d_bad_graph, piechart_bad_graph
 from good_graph_helper import barplot_good_graph, scatter_good_graph, scatter_3d_good_graph, piechart_good_graph
 from bad_graph_helper import heatmap_bad_graph
-from good_graph_helper import heatmap_good_graph
+from good_graph_helper import heatmap_good_graph, heatmap_good_bargraph
 from utils_iris import iris_data
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -43,6 +43,7 @@ heatmap_good_graph15 = heatmap_good_graph(15)
 heatmap_good_graph5 = heatmap_good_graph(5)
 heatmap_good_graph1 = heatmap_good_graph(1)
 heatmap_good_graph10 = heatmap_good_graph(10)
+heatmap_good_bargraph = heatmap_good_bargraph()
 
 app = dash.Dash(__name__, external_stylesheets=[
     dbc.themes.BOOTSTRAP,
@@ -398,7 +399,7 @@ app.layout = html.Div(
                                 html.Div(
                                     children=[
                                         html.H1(
-                                            children='Pytanie',
+                                            children='Jakie województwo charakteryzuje się największą częstotliwością występowania choroby?',
                                             style={'font-weight': 'bold',
                                                    'padding': '10px'}
                                         ),
@@ -406,9 +407,9 @@ app.layout = html.Div(
                                             children=[
                                                 dcc.RadioItems(id='heatmap-input',
                                                                 options = [
-                                                                    {'label': ' Odp a', 'value': 'a'},
-                                                                    {'label': ' Odp b', 'value': 'b'},
-                                                                    {'label': ' Odp c', 'value': 'c'},
+                                                                    {'label': ' Śląskie', 'value': 'a'},
+                                                                    {'label': ' Mazowieckie', 'value': 'b'},
+                                                                    {'label': ' Małopolskie', 'value': 'c'},
                                                                     ],
                                                                 value = ""),
                                                 html.P(id="heatmap-wrong-answer", children="Źle!", style={'display': 'none'}),
@@ -431,7 +432,7 @@ app.layout = html.Div(
                                                 html.Div([
                                                     dcc.Graph(figure=heatmap_bad_graph),
                                                 ], id='heatmap-bad-graph', style={'display': 'inline-block'}),
-                                                html.Div(id='heatmap-good-graph1', style={'display': 'inline-block'}),
+                                                html.Div(id='heatmap-good-bargraph1', style={'display': 'inline-block'}),
                                                 ]
                                         ), 
                                         html.Plaintext(id='heatmap-explanation'),
@@ -441,6 +442,7 @@ app.layout = html.Div(
                                     children=[
                                         html.Div(
                                             children=[
+                                                html.Div(id='heatmap-good-graph1', style={'display': 'inline-block'}),
                                                 html.Div(id='heatmap-good-graph2', style={'display': 'inline-block'}),
                                                 html.Div(id='heatmap-good-graph3', style={'display': 'inline-block'}),
                                                 ]
@@ -591,6 +593,7 @@ def update_piechart_output(n_clicks, user_input, old_n_clicks):
     dash.dependencies.Output('heatmap-good-graph1', 'children'),
     dash.dependencies.Output('heatmap-good-graph2', 'children'),
     dash.dependencies.Output('heatmap-good-graph3', 'children'),
+    dash.dependencies.Output('heatmap-good-bargraph1', 'children'),
     dash.dependencies.Output('heatmap-explanation', 'children'),
     dash.dependencies.Output('heatmap-wrong-answer', 'style'),
     dash.dependencies.Output('heatmap-good-answer', 'style'),
@@ -601,7 +604,7 @@ def update_piechart_output(n_clicks, user_input, old_n_clicks):
 def update_heatmap_output(n_clicks, user_input, old_n_clicks):
     if n_clicks is not None and n_clicks > int(old_n_clicks):
         if user_input=="":
-            return None, None, None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
+            return None, None, None, None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
             explanation = "Tworząc mapy cieplne zazwyczaj sugerujemy się tym, że kolory bliżej czerwonego oznaczają, że na danym obszarze jest zaobserwowanych więcej zjawisk. \n\
                  Autor tego wykresu postanowił odwrócić kolory, co pomimo istnienia legendy, powoduje dezorientację u użytkownika końcowego. \n \
@@ -612,14 +615,16 @@ def update_heatmap_output(n_clicks, user_input, old_n_clicks):
                 return dcc.Graph(figure=heatmap_good_graph10), \
                     dcc.Graph(figure=heatmap_good_graph15), \
                     dcc.Graph(figure=heatmap_good_graph5), \
+                    dcc.Graph(figure=heatmap_good_bargraph), \
                     explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
             else:
                 return dcc.Graph(figure=heatmap_good_graph10), \
                     dcc.Graph(figure=heatmap_good_graph15), \
                     dcc.Graph(figure=heatmap_good_graph5), \
+                    dcc.Graph(figure=heatmap_good_bargraph), \
                     explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
     else:
-        return None, None, None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
+        return None, None, None, None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
 if __name__ == '__main__':
     app.run_server(debug=True)
