@@ -502,10 +502,8 @@ def update_barplot_output(n_clicks, user_input, old_n_clicks):
                 (2 miesiące od zaciągnięcia pożyczki) do lipca 2020.")
         
             exp2 =  html.P("Autor lewego wykresu postanowił posortować oś X według nazw miesięcy, w których wypadały kolejne odnotowania stanu zadłużenia. \
-                Wprowadza to czytelnika w błąd, sugerując, że przedstawione zdarzenia następowały chronologicznie.  \
-                Gubiąc faktyczną kolejność zdarzeń, a co za tym idzie rosnący charakter wykresu, użytkownik pomyśli, że Kowalski zaciąga kilkanaście \
-                pożyczek na miesiąc i losowo niektóre spłaca. Po uważniejszym przyjrzeniu się odbiorca zauważy co najwyżej, że brakuje kilku miesięcy (np. maja) \
-                i nie domyśli się co tak naprawdę wykres przedstawia.")
+                Wprowadza to czytelnika w błąd, sugerując, że przedstawione zdarzenia następowały chronologicznie.")
+               
             exp3 = html.P("Co więcej autor wykresu uzał, że skoro pożyczka wynosiła 80$, a najwyższa wartość zadłużenia to 122$, \
                 dobrym pomysłem będzie przyjęcie tego przedziału za początek i koniec dla osi Y. \
                 Powoduje to, że po pierwsze nie wiadomo ile tak naprawdę wynosiło zadłużenie odnotowane w lipcu, \
