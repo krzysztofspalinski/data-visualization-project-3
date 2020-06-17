@@ -188,17 +188,15 @@ app.layout = html.Div(
                             children=[
                                 html.Div(
                                     children=[
-                                        html.P('Mimo, że zazwyczaj dodawanie cech jest wygodną formą zwiększenia informacji, \
-                                                ich nadmiar bywa zgubny. Poniższy wykres przedstawia znany w świecie uczenia maszynowego \
+                                        html.H1(
+                                            children='Czy potrafisz przypisać punkty oznaczone symbolem X do odpowiednich klas?',
+                                            style={'font-weight': 'bold',
+                                                   'padding': '10px'}
+                                        ),
+                                        html.P('Poniższy wykres przedstawia znany w świecie uczenia maszynowego \
                                                 zbiór irysów. Oś x przedstawia długość kielicha, oś y szerokość kielicha, kolor oznacza długość \
                                                 płatka, natomiast wielkość punktów reprezentuje szerokość płatka. Poszczególne gatunki irysów \
-                                                oznaczone  są różnymi symbolami.'),
-                                        html.P(
-                                            children='Twoim celem jest przypisanie punktów oznaczonych symbolem X \
-                                                do odpowiedniego gatunku kwiatu (setosa, virginica, versicolor). \
-                                                Porównaj wszystkie cztery cechy obiektów i sprawdź ile udało Ci się poprawnie odszyfrować!',
-                                            style={'font-weight': 'bold'}
-                                        ),
+                                                oznaczone  są różnymi symbolami. Twoim zadaniem jest sklasyfikowanie irysów oznaczonych symbolem X.'),
                                         html.Div(
                                             children=[
                                                 html.P(children='Punkt 1 ',style={'display':'inline-block'} ),
@@ -519,14 +517,12 @@ def update_scatter_output(n_clicks, input1, input2, input3, input4, input5, old_
         if input1=="" or input2=="" or input3=="" or input4=="" or input5=="":
             return None, "Zaznacz wszystkie odpowiedzi!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "I jak poszło? Czy zgodzisz się, że poprzedni wykres był chaotyczny? \n \
-                Problemem poprzedniego wykresu jest jego wielowymiarowość, aż 4 zmienne (w dodatku ciągłe!) \n \
+            explanation = "I jak poszło? Czy zgodzisz się, że pierwszy wykres był chaotyczny? \n \
+                Problemem pierwszego wykresu jest jego wielowymiarowość, aż 4 zmienne (w dodatku ciągłe!) \n \
                 są przedstawione graficznie, co powoduje, że każda z nich jest trudna do zinterpretowania. \n \
-                Dla odmiany spójrz na poniższe dwa wykresy. W obecnej sytuacji wszystko jest dużo czytelniejsze. \n \
-                Czy teraz uda Ci się poprawnie zidentyfikować te same obiekty? Dodatkowo korzystnie na czytelność \n \
-                wykresu wpłynęło dostosowanie osi. W poprzednim wypadku około 60% wykersu było puste, obserwacje były \n \
-                w jednym miejscu co jeszcze bardziej utrudniło interpretację. Teraz osie są przycięte, tak aby maksymalnie \n \
-                wykorzystać potencjał wykresów. Są też odpowiednio podpisane, w związku z czym nie zgubisz żadnej informacji."
+                Dla odmiany spójrz na nowe dwa wykresy. Dodatkowo korzystnie na czytelność \n \
+                wykresu wpłynęło dostosowanie osi. W poprzednim wypadku około 60% wykresu było puste, obserwacje były \n \
+                w jednym miejscu co jeszcze bardziej utrudniło interpretację."
             if correctAnwsers[1]==input1 and \
                 correctAnwsers[2]==input2 and \
                 correctAnwsers[3]==input3 and \
