@@ -59,75 +59,6 @@ app.layout = html.Div(
             className='scroll-container',
             children=[
                 html.Section(
-                    id='title-section',
-                    children=html.Div(
-                        className='screen-height',
-                        style={'align-items': 'center', 'display': 'flex',
-                               'flex-direction': 'column', 'justify-content': 'center'},
-                        children=[
-                            html.H1("Jakaś strona tytułowa może?"),
-                            html.H2("Albo bez..",
-                                    style={'margin-bottom': '20px'}),
-                            html.Div([
-                                html.Div("9 ", style={'font-size': 60}),
-                                html.Div("", style={'width': '10px'}),
-                                html.Div("lat", style={'font-size': 25}),
-                                html.Div("", style={'width': '50px'}),
-                                html.Div("280 000 ", style={'font-size': 60}),
-                                html.Div("", style={'width': '10px'}),
-                                html.Div("firm", style={'font-size': 25}),
-                                html.Div("", style={'width': '50px'}),
-                                html.Div("5 ", style={'font-size': 60}),
-                                html.Div("", style={'width': '10px'}),
-                                html.Div("wydarzeń", style={'font-size': 25}),
-                            ], style={'align-items': 'center', 'display': 'flex', 'flex-direction': 'row', 'justify-content': 'center'}),
-                            html.Div([
-                                html.Div([
-                                    html.H4(
-                                        "Przekrój przestrzenny oraz gospodarczy działalności"),
-                                    html.Div([
-                                        html.Img(src='data:image/png;base64,{}'.format(analytics_image.decode()),
-                                                 height=250)
-                                    ]),
-                                    html.Div("W jakim regionie firmy przetrwały najdłużej?", style={
-                                             'font-size': 18}),
-                                    html.Div("Które rodzaje działalności mają nawiększe szanse na sukces?", style={
-                                             'font-size': 18}),
-                                    html.Div("Kiedy najczęściej upadają firmy?", style={
-                                             'font-size': 18}),
-                                    dbc.Button(
-                                        id='analysis-button',
-                                        href='#1',
-                                        children="Sprawdź",
-                                        color='primary',
-                                        style={'margin-top': '10px'}
-                                    )
-                                ], style={'align-items': 'center', 'display': 'flex', 'flex-direction': 'column', 'justify-content': 'center'}),
-                                html.Div("", style={'width': '100px'}),
-                                html.Div([
-                                    html.H4("Predykcja życia firmy"),
-                                    html.Div([
-                                        html.Img(src='data:image/png;base64,{}'.format(prediction_image.decode()),
-                                                 height=250)
-                                    ]),
-                                    html.Div("Jakie są Twoje szanse na sukces?", style={
-                                             'font-size': 18}),
-                                    html.Div("", style={'font-size': 18}),
-                                    html.Div("", style={'font-size': 18}),
-                                    dbc.Button(
-                                        id='prediction-button',
-                                        href='#2',
-                                        children="Sprawdź",
-                                        color='primary',
-                                        style={'margin-top': '10px'}
-                                    )
-                                ], style={'align-items': 'center', 'display': 'flex', 'flex-direction': 'column', 'justify-content': 'center', 'align-self': 'flex-start'}),
-                            ], style={'align-items': 'center', 'display': 'flex', 'flex-direction': 'row', 'justify-content': 'center',
-                                      'padding-top': '50px'}),
-                        ]
-                    )
-                ),
-                html.Section(
                     id='barplot-section',
                     children=html.Div(
                         className='screen-height',
@@ -472,7 +403,7 @@ app.layout = html.Div(
                       run='''
                             new fullScroll({	
                                 mainElement: 'main', 
-                                sections:['title-section', 'barplot-section', 'scatter-section', 'scatter-3d-section', 'piechart-section', 'heatmap-section'],
+                                sections:['barplot-section', 'scatter-section', 'scatter-3d-section', 'piechart-section', 'heatmap-section'],
                                 displayDots: true,
                                 dotsPosition: 'right',
                                 animateTime: 0.7,
