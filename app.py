@@ -506,7 +506,7 @@ Cztery osobne wykresy pozwoliły na przedstawienie tych danych w taki sposób, �
 produktów w obrębie jednej firmy jest ułatwione. W przypadku gdyby istotne było porównywanie wyników \n \
 pomiędzy różnymi firmami, należałoby rozważyć inny typ wykresu. "
             if user_input=="a":
-                return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
                 return dcc.Graph(style={'height': '400px'}, figure=scatter_3d_good_graph), explanation, {'color' : 'red', 'display': 'block'}, {'display': 'none'}, str(n_clicks)
     else:
