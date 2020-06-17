@@ -11,6 +11,7 @@ import os
 from joblib import load
 import visdcc
 import base64
+import flask
 
 from bad_graph_helper import barplot_bad_graph, scatter_bad_graph, scatter_3d_bad_graph, piechart_bad_graph
 from good_graph_helper import barplot_good_graph, scatter_good_graph, scatter_3d_good_graph, piechart_good_graph
@@ -45,6 +46,7 @@ heatmap_good_graph1 = heatmap_good_graph(1)
 heatmap_good_graph10 = heatmap_good_graph(10)
 heatmap_good_bargraph = heatmap_good_bargraph()
 
+server = flask.Flask(__name__)
 app = dash.Dash(__name__, external_stylesheets=[
     dbc.themes.BOOTSTRAP,
     './styles.css',
