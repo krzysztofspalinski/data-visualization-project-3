@@ -11,6 +11,8 @@ from plotly.validators.scatter.marker import SymbolValidator
 import chart_studio.plotly as py
 import plotly.figure_factory as ff
 from heatmap_data_provider import getHeatmapData
+from pie_get_data import get_pie_data, get_year_price_sum
+from plotly.subplots import make_subplots
 
 def barplot_bad_graph():
     # colors = ['lightslategray',] * 9
@@ -125,24 +127,30 @@ def scatter_3d_bad_graph(seed=42):
 
 def piechart_bad_graph():
 
-    def get_labels():
-        return ['Golf', 'Mustang', 'Octavia', 'Multipla', 'Focus']
+    def create_subfig(fig, i, colors):
+        year = 2013 + i
+        year_data = get_pie_data(year)
+        price = year_data['price']
+        pie_fig = go.Pie(labels=year_data['brand'],
+                                values=price)
+        fig.add_trace(pie_fig, 1, i)
+        return pie_fig
 
-    def get_values(min, max):
-        return [round(randint(min, max) / 10) * 10 for _ in range(5)]
-
+    def create_annotation(year, x):
+        return dict(text=f'suma cen: {get_year_price_sum(year)} zł', x=x, y=0, font_size=16, showarrow=False)
 
     colors = ['#2afe38', '#22eb2f', '#1ad827', '#13c71e', '#0bb416']
-    vals = get_values(100, 300)
-    fig = go.Figure(data=[go.Pie(labels=get_labels(),
-                                values=vals)])
-    fig.update_traces(hoverinfo='skip', textinfo='label', textfont_size=16,
-                    marker=dict(colors=colors))
-    fig.update_layout(title_text=f'Liczba koni mechanicznych (suma {sum(vals)})')
+    fig = make_subplots(1, 3, specs=[[{'type':'domain'}, {'type':'domain'}, {'type':'domain'}]])
+    for i in range(1, 4):
+        create_subfig(fig, i, colors)
+    fig.update_traces(hoverinfo='skip', textinfo='label', textfont_size=12,
+        marker=dict(colors=colors), textposition='inside', hole=0.2)
+    fig.update_layout(title_text='Ceny samochodów w latach 2014-2016', showlegend=False,
+        annotations=[create_annotation(2014, 0.01), create_annotation(2015, 0.5), create_annotation(2016, 1.0)])
     return fig
 
 def heatmap_bad_graph(radius):    
-    px.set_mapbox_access_token("") # INSERT TOKEN
+    px.set_mapbox_access_token("pk.eyJ1IjoicHJlc3RpIiwiYSI6ImNrYmR5c2dheTBnYnYyc3FlbzYwNG1oc3QifQ.UvQIxOoMc-UkTfNH4V5vFQ") # INSERT TOKEN
     df = getHeatmapData()
     fig = px.density_mapbox(df, lat="Lat", lon="Lon", z="Population", radius=radius, color_continuous_scale=['red', 'red', 'yellow', 'green', 'cyan', 'blue', 'blue'])
     

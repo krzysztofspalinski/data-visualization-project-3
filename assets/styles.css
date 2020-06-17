@@ -1,3 +1,7 @@
+body {
+  font-size: 12px;
+}
+
 .left {
   background: grey;
 }
@@ -17,6 +21,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
+}
+
+section { 
+  padding: 0 20px;
 }
 
 .year-section{
@@ -103,6 +111,22 @@
 #prediction-graph-div{
     flex: 0;
     width: 95%;
+}
+
+h1 {
+  font-size: 1.8em;
+  font-weight: 400 !important;
+}
+
+.alert {
+  padding: 5px !important;
+  margin: 10px auto !important;
+}
+
+.explain {
+  border: 1px solid #cfcfcf; 
+  padding: 5px; 
+  border-radius: 3px;
 }
 
 @media only screen and (max-height: 900px) {

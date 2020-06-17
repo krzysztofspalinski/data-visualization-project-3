@@ -59,75 +59,6 @@ app.layout = html.Div(
             className='scroll-container',
             children=[
                 html.Section(
-                    id='title-section',
-                    children=html.Div(
-                        className='screen-height',
-                        style={'align-items': 'center', 'display': 'flex',
-                               'flex-direction': 'column', 'justify-content': 'center'},
-                        children=[
-                            html.H1("Jakaś strona tytułowa może?"),
-                            html.H2("Albo bez..",
-                                    style={'margin-bottom': '20px'}),
-                            html.Div([
-                                html.Div("9 ", style={'font-size': 60}),
-                                html.Div("", style={'width': '10px'}),
-                                html.Div("lat", style={'font-size': 25}),
-                                html.Div("", style={'width': '50px'}),
-                                html.Div("280 000 ", style={'font-size': 60}),
-                                html.Div("", style={'width': '10px'}),
-                                html.Div("firm", style={'font-size': 25}),
-                                html.Div("", style={'width': '50px'}),
-                                html.Div("5 ", style={'font-size': 60}),
-                                html.Div("", style={'width': '10px'}),
-                                html.Div("wydarzeń", style={'font-size': 25}),
-                            ], style={'align-items': 'center', 'display': 'flex', 'flex-direction': 'row', 'justify-content': 'center'}),
-                            html.Div([
-                                html.Div([
-                                    html.H4(
-                                        "Przekrój przestrzenny oraz gospodarczy działalności"),
-                                    html.Div([
-                                        html.Img(src='data:image/png;base64,{}'.format(analytics_image.decode()),
-                                                 height=250)
-                                    ]),
-                                    html.Div("W jakim regionie firmy przetrwały najdłużej?", style={
-                                             'font-size': 18}),
-                                    html.Div("Które rodzaje działalności mają nawiększe szanse na sukces?", style={
-                                             'font-size': 18}),
-                                    html.Div("Kiedy najczęściej upadają firmy?", style={
-                                             'font-size': 18}),
-                                    dbc.Button(
-                                        id='analysis-button',
-                                        href='#1',
-                                        children="Sprawdź",
-                                        color='primary',
-                                        style={'margin-top': '10px'}
-                                    )
-                                ], style={'align-items': 'center', 'display': 'flex', 'flex-direction': 'column', 'justify-content': 'center'}),
-                                html.Div("", style={'width': '100px'}),
-                                html.Div([
-                                    html.H4("Predykcja życia firmy"),
-                                    html.Div([
-                                        html.Img(src='data:image/png;base64,{}'.format(prediction_image.decode()),
-                                                 height=250)
-                                    ]),
-                                    html.Div("Jakie są Twoje szanse na sukces?", style={
-                                             'font-size': 18}),
-                                    html.Div("", style={'font-size': 18}),
-                                    html.Div("", style={'font-size': 18}),
-                                    dbc.Button(
-                                        id='prediction-button',
-                                        href='#2',
-                                        children="Sprawdź",
-                                        color='primary',
-                                        style={'margin-top': '10px'}
-                                    )
-                                ], style={'align-items': 'center', 'display': 'flex', 'flex-direction': 'column', 'justify-content': 'center', 'align-self': 'flex-start'}),
-                            ], style={'align-items': 'center', 'display': 'flex', 'flex-direction': 'row', 'justify-content': 'center',
-                                      'padding-top': '50px'}),
-                        ]
-                    )
-                ),
-                html.Section(
                     id='barplot-section',
                     children=html.Div(
                         className='screen-height',
@@ -149,18 +80,21 @@ app.layout = html.Div(
                                                                     {'label': ' O około 10%', 'value': 'b'},
                                                                     {'label': ' Nie da się określić', 'value': 'c'},
                                                                     ],
-                                                                value = ""),
-                                                html.P(id="barplot-wrong-answer", children="Źle!", style={'display': 'none'}),
-                                                html.P(id="barplot-good-answer", children="Dobrze!", style={'display': 'none'})
+                                                                value = "",
+                                                                labelClassName='mr-2')
                                             ]
                                         ),
                                         
-                                        html.Button(
+                                        dbc.Button(
                                             'Sprawdź odpowiedź',
+                                            color='primary',
                                             id="barplot-check-answer-button",
                                         ),
                                         html.Div(id='barplot-number-of-clicks',
-                                             style={'display': 'none'}, children='0')
+                                             style={'display': 'none'}, children='0'),
+                                        html.Div(children = [                                        
+                                            dbc.Alert("Źle!", id="barplot-wrong-answer", style={'display': 'none'}, color='danger'),
+                                        dbc.Alert("Dobrze!", id="barplot-good-answer", style={'display': 'none'})])
                                     ]
                                 ),
                                 html.Div(
@@ -168,11 +102,11 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=barplot_bad_graph),
+                                                    dcc.Graph(style={'height': '350px'}, figure=barplot_bad_graph),
                                                 ], id='barplot-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='barplot-good-graph', style={'display': 'inline-block'})]
                                         ), 
-                                        html.Plaintext(id='barplot-explanation'),
+                                        html.Div(id='barplot-explanation', className='explain'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -208,7 +142,7 @@ app.layout = html.Div(
                                                         {'label': 'versicolor', 'value': 'versicolor'}
                                                     ],
                                                     value='',
-                                                    style={'width':'100px', 'display':'inline-block'}
+                                                    style={'display':'inline-block', 'vertical-align': 'middle', 'padding': '0 20px'},
                                                 ),
                                                 html.P(children=', punkt 2 ',style={'display':'inline-block'} ),
                                                 dcc.Dropdown(
@@ -219,7 +153,7 @@ app.layout = html.Div(
                                                         {'label': 'versicolor', 'value': 'versicolor'}
                                                     ],
                                                     value='',
-                                                    style={'width':'100px', 'display':'inline-block'}
+                                                    style={'display':'inline-block', 'vertical-align': 'middle', 'padding': '0 20px'},
                                                 ),
                                                 html.P(children=', punkt 3 ',style={'display':'inline-block'} ),
                                                 dcc.Dropdown(
@@ -230,7 +164,7 @@ app.layout = html.Div(
                                                         {'label': 'versicolor', 'value': 'versicolor'}
                                                     ],
                                                     value='',
-                                                    style={'width':'100px', 'display':'inline-block'}
+                                                    style={'display':'inline-block', 'vertical-align': 'middle', 'padding': '0 20px'},
                                                 ),
                                                 html.P(children=', punkt 4 ',style={'display':'inline-block'} ),
                                                 dcc.Dropdown(
@@ -241,7 +175,8 @@ app.layout = html.Div(
                                                         {'label': 'versicolor', 'value': 'versicolor'}
                                                     ],
                                                     value='',
-                                                    style={'width':'100px', 'display':'inline-block'}
+                                                    style={'display':'inline-block', 'vertical-align': 'middle', 'padding': '0 20px'},
+                                                    className='mx-2'
                                                 ),
                                                 html.P(children=', punkt 5',style={'display':'inline-block'} ),
                                                 dcc.Dropdown(
@@ -252,19 +187,22 @@ app.layout = html.Div(
                                                         {'label': 'versicolor', 'value': 'versicolor'}
                                                     ],
                                                     value='',
-                                                    style={'width':'100px', 'display':'inline-block'}
-                                                ),
-                                                html.P(id="scatter-wrong-answer", children="Źle!", style={'display': 'none'}),
-                                                html.P(id="scatter-good-answer", children="Dobrze!", style={'display': 'none'})
+                                                    style={'display':'inline-block', 'vertical-align': 'middle', 'padding': '0 20px'},
+                                                )
                                             ]
                                         ),
                                         
-                                        html.Button(
+                                        dbc.Button(
                                             'Sprawdź odpowiedź',
-                                            id="scatter-check-answer-button",
+                                            color='primary',
+                                            id="scatter-check-answer-button"
                                         ),
                                         html.Div(id='scatter-number-of-clicks',
-                                             style={'display': 'none'}, children='0')
+                                             style={'display': 'none'}, children='0'),
+                                        html.Div(children = [                                        
+                                            dbc.Alert("Źle!", id="scatter-wrong-answer", style={'display': 'none'}, color='danger'),
+                                        dbc.Alert("Dobrze!", id="scatter-good-answer", style={'display': 'none'})])
+
                                     ]
                                 ),
                                 html.Div(
@@ -272,11 +210,11 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=scatter_bad_graph),
+                                                    dcc.Graph( figure=scatter_bad_graph),
                                                 ], id='scatter-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='scatter-good-graph', style={'display': 'inline-block'})]
                                         ), 
-                                        html.Plaintext(id='scatter-explanation'),
+                                        html.P(id='scatter-explanation', className='explain'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -305,18 +243,21 @@ app.layout = html.Div(
                                                                     {'label': ' Produkt B   ', 'value': 'b'},
                                                                     {'label': ' Sprzedaż obu produktów była taka sama ', 'value': 'c'},
                                                                     ],
-                                                                value = ""),
-                                                html.P(id="scatter-3d-wrong-answer", children="Źle!", style={'display': 'none'}),
-                                                html.P(id="scatter-3d-good-answer", children="Dobrze!", style={'display': 'none'})
+                                                                value = "",
+                                                                labelClassName='mr-2')
                                             ]
                                         ),
                                         
-                                        html.Button(
+                                        dbc.Button(
                                             'Sprawdź odpowiedź',
+                                            color='primary',
                                             id="scatter-3d-check-answer-button",
                                         ),
                                         html.Div(id='scatter-3d-number-of-clicks',
-                                             style={'display': 'none'}, children='0')
+                                             style={'display': 'none'}, children='0'),
+                                        html.Div(children = [                                        
+                                            dbc.Alert("Źle!", id="scatter-3d-wrong-answer", style={'display': 'none'}, color='danger'),
+                                        dbc.Alert("Dobrze!", id="scatter-3d-good-answer", style={'display': 'none'})])
                                     ]
                                 ),
                                 html.Div(
@@ -324,11 +265,11 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=scatter_3d_bad_graph),
+                                                    dcc.Graph(style={'height': '400px'}, figure=scatter_3d_bad_graph),
                                                 ], id='scatter-3d-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='scatter-3d-good-graph', style={'display': 'inline-block'})]
                                         ), 
-                                        html.Plaintext(id='scatter-3d-explanation'),
+                                        html.P(id='scatter-3d-explanation', className='explain'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -345,7 +286,7 @@ app.layout = html.Div(
                                 html.Div(
                                     children=[
                                         html.H1(
-                                            children='Pytanie',
+                                            children='W którym roku Ford Focus kosztował najwięcej?',
                                             style={'font-weight': 'bold',
                                                    'padding': '10px'}
                                         ),
@@ -353,22 +294,25 @@ app.layout = html.Div(
                                             children=[
                                                 dcc.RadioItems(id='piechart-input',
                                                                 options = [
-                                                                    {'label': ' Odp a', 'value': 'a'},
-                                                                    {'label': ' Odp b', 'value': 'b'},
-                                                                    {'label': ' Odp c', 'value': 'c'},
+                                                                    {'label': '2014', 'value': 'a'},
+                                                                    {'label': '2015', 'value': 'b'},
+                                                                    {'label': '2016', 'value': 'c'},
                                                                     ],
-                                                                value = ""),
-                                                html.P(id="piechart-wrong-answer", children="Źle!", style={'display': 'none'}),
-                                                html.P(id="piechart-good-answer", children="Dobrze!", style={'display': 'none'})
+                                                                value = "",
+                                                                labelClassName='mr-2')
                                             ]
                                         ),
                                         
-                                        html.Button(
+                                        dbc.Button(
                                             'Sprawdź odpowiedź',
+                                            color='primary',
                                             id="piechart-check-answer-button",
                                         ),
                                         html.Div(id='piechart-number-of-clicks',
-                                             style={'display': 'none'}, children='0')
+                                             style={'display': 'none'}, children='0'),
+                                        html.Div(children = [                                        
+                                            dbc.Alert("Źle!", id="piechart-wrong-answer", style={'display': 'none'}, color='danger'),
+                                        dbc.Alert("Dobrze!", id="piechart-good-answer", style={'display': 'none'})])
                                     ]
                                 ),
                                 html.Div(
@@ -376,11 +320,11 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=piechart_bad_graph),
+                                                    dcc.Graph(style={'height': '400px'}, figure=piechart_bad_graph),
                                                 ], id='piechart-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='piechart-good-graph', style={'display': 'inline-block'})]
                                         ), 
-                                        html.Plaintext(id='piechart-explanation'),
+                                        html.P(id='piechart-explanation', className='explain'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -409,18 +353,21 @@ app.layout = html.Div(
                                                                     {'label': ' Mazowieckie', 'value': 'b'},
                                                                     {'label': ' Małopolskie', 'value': 'c'},
                                                                     ],
-                                                                value = ""),
-                                                html.P(id="heatmap-wrong-answer", children="Źle!", style={'display': 'none'}),
-                                                html.P(id="heatmap-good-answer", children="Dobrze!", style={'display': 'none'})
+                                                                value = "",
+                                                                labelClassName='mr-2'),
                                             ]
                                         ),
                                         
-                                        html.Button(
+                                        dbc.Button(
                                             'Sprawdź odpowiedź',
+                                            color='primary',
                                             id="heatmap-check-answer-button",
                                         ),
                                         html.Div(id='heatmap-number-of-clicks',
-                                             style={'display': 'none'}, children='0')
+                                             style={'display': 'none'}, children='0'),
+                                        html.Div(children = [                                        
+                                            dbc.Alert("Źle!", id="heatmap-wrong-answer", style={'display': 'none'}, color='danger'),
+                                        dbc.Alert("Dobrze!", id="heatmap-good-answer", style={'display': 'none'})])
                                     ]
                                 ),
                                 html.Div(
@@ -428,12 +375,12 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=heatmap_bad_graph),
+                                                    dcc.Graph(style={'height': '400px'}, figure=heatmap_bad_graph),
                                                 ], id='heatmap-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='heatmap-good-bargraph1', style={'display': 'inline-block'}),
                                                 ]
                                         ), 
-                                        html.Plaintext(id='heatmap-explanation'),
+                                        html.P(id='heatmap-explanation', className='explain'),
                                     ], style={'display': 'inline-block'}
                                 ),
                                 html.Div(
@@ -456,7 +403,7 @@ app.layout = html.Div(
                       run='''
                             new fullScroll({	
                                 mainElement: 'main', 
-                                sections:['title-section', 'barplot-section', 'scatter-section', 'scatter-3d-section', 'piechart-section', 'heatmap-section'],
+                                sections:['barplot-section', 'scatter-section', 'scatter-3d-section', 'piechart-section', 'heatmap-section'],
                                 displayDots: true,
                                 dotsPosition: 'right',
                                 animateTime: 0.7,
@@ -481,21 +428,23 @@ def update_barplot_output(n_clicks, user_input, old_n_clicks):
         if user_input=="":
             return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "W styczniu 2017 Graf Kowalski wziął pożyczkę wysokości 80$. Odsetki wysokości 1% na miesiąc. \n \
-                Oba wykresy przedstawiają stan zadłużenia Grafa, odnotowywany raz na 5 miesięcy począwszy od marca 2017 \n \
-                (2 miesiące od zaciągnięcia pożyczki) do lipca 2020. \n \n \
-                Autor lewego wykresu postanowił posortować oś X według nazw miesięcy, w których wypadały kolejne odnotowania stanu zadłużenia. \n \
-                Wprowadza to czytelnika w błąd, sugerując, że przedstawione zdarzenia następowały chronologicznie. \n \
-                Co więcej autor wykresu uznał, że skoro pożyczka wynosiła 80$, a najwyższa wartość zadłużenia to 122$, \n \
-                dobrym pomysłem będzie przyjęcie tego przedziału za początek i koniec dla osi Y. \n \
-                Powoduje to, że po pierwsze nie wiadomo ile tak naprawdę wynosiło zadłużenie odnotowane w lipcu, \n \
-                a po drugie zaburza proporcje między słupkami. Na pierwszy rzut oka słupek 'Styczeń' \n \
-                jest 2 razy mniejszy niż słupek 'Listopad', co sugeruje, że zadłużenie w listopadzie było dwukrotnie większe niż w styczniu. \n \
-                Na prawym wykresie widzimy, że tak naprawdę wzrosło tylko ~1.11 razy."
+            exp1 = html.P("W styczniu 2017 Graf Kowalski wziął pożyczkę wysokości 80$. Odsetki wysokości 1% na miesiąc. \
+                Oba wykresy przedstawiają stan zadłużenia Grafa, odnotowywany raz na 5 miesięcy począwszy od marca 2017 \
+                (2 miesiące od zaciągnięcia pożyczki) do lipca 2020.")
+        
+            exp2 =  html.P("Autor lewego wykresu postanowił posortować oś X według nazw miesięcy, w których wypadały kolejne odnotowania stanu zadłużenia. \
+                Wprowadza to czytelnika w błąd, sugerując, że przedstawione zdarzenia następowały chronologicznie.")
+               
+            exp3 = html.P("Co więcej autor wykresu uzał, że skoro pożyczka wynosiła 80$, a najwyższa wartość zadłużenia to 122$, \
+                dobrym pomysłem będzie przyjęcie tego przedziału za początek i koniec dla osi Y. \
+                Powoduje to, że po pierwsze nie wiadomo ile tak naprawdę wynosiło zadłużenie odnotowane w lipcu, \
+                a po drugie zaburza proporcje między słupkami. Na pierwszy rzut oka słupek 'Styczeń' \
+                jest 2 razy mniejszy niż słupek 'Listopad', co sugeruje, że zadłużenie w listopadzie było dwukrotnie większe niż w styczniu.  \
+                Na prawym wykresie widzimy, że tak naprawdę wzrosło tylko ~1.11 razy.")
             if user_input=="b":
-                return dcc.Graph(figure=barplot_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=barplot_good_graph), [exp1, exp2, exp3], {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=barplot_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=barplot_good_graph), [exp1, exp2, exp3], {'color' : 'red', 'display': 'block'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
@@ -529,9 +478,9 @@ def update_scatter_output(n_clicks, input1, input2, input3, input4, input5, old_
                 correctAnwsers[4]==input4 and \
                 correctAnwsers[5]==input5:
                 
-                return dcc.Graph(figure=scatter_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=scatter_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=scatter_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=scatter_good_graph), explanation, {'color' : 'red', 'display': 'block'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
@@ -559,7 +508,7 @@ pomiędzy różnymi firmami, należałoby rozważyć inny typ wykresu. "
             if user_input=="a":
                 return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=scatter_3d_good_graph), explanation, {'color' : 'red', 'display': 'block'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
@@ -577,11 +526,15 @@ def update_piechart_output(n_clicks, user_input, old_n_clicks):
         if user_input=="":
             return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "Wyjaśnienie"
+            explanation = "Problemem w niepoprawnej wizualizacji jest błędne wykorzystanie wykresów kołowych. Ponieważ suma cen zmienia się, \
+                można odnieść mylne wrażenie, że w 2016 roku Focus kosztował drożej niż w 2015 roku. Kąty w wykresach kołowych porównuje \
+                się również trudniej w porównaniu do wysokości słupków w wykresie słupkowym. Oprócz tego, w przeciwieństwie do błędnego \
+                wykresu, oznaczenia cen dla poszczególnych lat w poprawnym wykresie występują koło siebie. Percepcję utrudniają dodatkowo \
+                zlewające się kolory."
             if user_input=="b":
-                return dcc.Graph(figure=piechart_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=piechart_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=piechart_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=piechart_good_graph), explanation, {'color' : 'red', 'display': 'block'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
@@ -602,23 +555,23 @@ def update_heatmap_output(n_clicks, user_input, old_n_clicks):
         if user_input=="":
             return None, None, None, None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "Tworząc mapy cieplne zazwyczaj sugerujemy się tym, że kolory bliżej czerwonego oznaczają, że na danym obszarze jest zaobserwowanych więcej zjawisk. \n\
-                 Autor tego wykresu postanowił odwrócić kolory, co pomimo istnienia legendy, powoduje dezorientację u użytkownika końcowego. \n \
-                 Warto również zauważyć jak zmienia się odbiór wykresu w zależności od ustawienia stopnia rozmycia dla punktów na mapie. \n \
-                 Mapa cieplna bardzo dobrze pokazuje jak dane się rozkładają na obszarze całej Polski, ale jednocześnieciężko z niej odczytać szczegóły. \n \
+            explanation = "Tworząc mapy cieplne zazwyczaj sugerujemy się tym, że kolory bliżej czerwonego oznaczają, że na danym obszarze jest zaobserwowanych więcej zjawisk. \
+                 Autor tego wykresu postanowił odwrócić kolory, co pomimo istnienia legendy, powoduje dezorientację u użytkownika końcowego. \
+                 Warto również zauważyć jak zmienia się odbiór wykresu w zależności od ustawienia stopnia rozmycia dla punktów na mapie. \
+                 Mapa cieplna bardzo dobrze pokazuje jak dane się rozkładają na obszarze całej Polski, ale jednocześnieciężko z niej odczytać szczegóły. \
                  W przypadku pytań o konkretne województwo czy miejscowość, zamiast ogólnego obszaru, warto przemyśleć inne rodzaje wykresów."
             if user_input=="b":
-                return dcc.Graph(figure=heatmap_good_graph10), \
-                    dcc.Graph(figure=heatmap_good_graph15), \
-                    dcc.Graph(figure=heatmap_good_graph5), \
-                    dcc.Graph(figure=heatmap_good_bargraph), \
-                    explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph10), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph15), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph5), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_bargraph), \
+                    explanation, {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=heatmap_good_graph10), \
-                    dcc.Graph(figure=heatmap_good_graph15), \
-                    dcc.Graph(figure=heatmap_good_graph5), \
-                    dcc.Graph(figure=heatmap_good_bargraph), \
-                    explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph10), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph15), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph5), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_bargraph), \
+                    explanation, {'color' : 'red', }, {'display': 'none'}, str(n_clicks)
     else:
         return None, None, None, None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
