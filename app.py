@@ -148,18 +148,21 @@ app.layout = html.Div(
                                                                     {'label': ' O około 10%', 'value': 'b'},
                                                                     {'label': ' Nie da się określić', 'value': 'c'},
                                                                     ],
-                                                                value = ""),
-                                                html.P(id="barplot-wrong-answer", children="Źle!", style={'display': 'none'}),
-                                                html.P(id="barplot-good-answer", children="Dobrze!", style={'display': 'none'})
+                                                                value = "",
+                                                                labelClassName='mr-2')
                                             ]
                                         ),
                                         
-                                        html.Button(
+                                        dbc.Button(
                                             'Sprawdź odpowiedź',
+                                            color='primary',
                                             id="barplot-check-answer-button",
                                         ),
                                         html.Div(id='barplot-number-of-clicks',
-                                             style={'display': 'none'}, children='0')
+                                             style={'display': 'none'}, children='0'),
+                                        html.Div(children = [                                        
+                                            dbc.Alert("Źle!", id="barplot-wrong-answer", style={'display': 'none'}, color='danger'),
+                                        dbc.Alert("Dobrze!", id="barplot-good-answer", style={'display': 'none'})])
                                     ]
                                 ),
                                 html.Div(
@@ -167,11 +170,11 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=barplot_bad_graph),
+                                                    dcc.Graph(style={'height': '350px'}, figure=barplot_bad_graph),
                                                 ], id='barplot-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='barplot-good-graph', style={'display': 'inline-block'})]
                                         ), 
-                                        html.Plaintext(id='barplot-explanation'),
+                                        html.Div(id='barplot-explanation', className='explain'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -209,7 +212,7 @@ app.layout = html.Div(
                                                         {'label': 'versicolor', 'value': 'versicolor'}
                                                     ],
                                                     value='',
-                                                    style={'width':'100px', 'display':'inline-block'}
+                                                    style={'display':'inline-block', 'vertical-align': 'middle', 'padding': '0 20px'},
                                                 ),
                                                 html.P(children=', punkt 2 ',style={'display':'inline-block'} ),
                                                 dcc.Dropdown(
@@ -220,7 +223,7 @@ app.layout = html.Div(
                                                         {'label': 'versicolor', 'value': 'versicolor'}
                                                     ],
                                                     value='',
-                                                    style={'width':'100px', 'display':'inline-block'}
+                                                    style={'display':'inline-block', 'vertical-align': 'middle', 'padding': '0 20px'},
                                                 ),
                                                 html.P(children=', punkt 3 ',style={'display':'inline-block'} ),
                                                 dcc.Dropdown(
@@ -231,7 +234,7 @@ app.layout = html.Div(
                                                         {'label': 'versicolor', 'value': 'versicolor'}
                                                     ],
                                                     value='',
-                                                    style={'width':'100px', 'display':'inline-block'}
+                                                    style={'display':'inline-block', 'vertical-align': 'middle', 'padding': '0 20px'},
                                                 ),
                                                 html.P(children=', punkt 4 ',style={'display':'inline-block'} ),
                                                 dcc.Dropdown(
@@ -242,7 +245,8 @@ app.layout = html.Div(
                                                         {'label': 'versicolor', 'value': 'versicolor'}
                                                     ],
                                                     value='',
-                                                    style={'width':'100px', 'display':'inline-block'}
+                                                    style={'display':'inline-block', 'vertical-align': 'middle', 'padding': '0 20px'},
+                                                    className='mx-2'
                                                 ),
                                                 html.P(children=', punkt 5',style={'display':'inline-block'} ),
                                                 dcc.Dropdown(
@@ -253,19 +257,22 @@ app.layout = html.Div(
                                                         {'label': 'versicolor', 'value': 'versicolor'}
                                                     ],
                                                     value='',
-                                                    style={'width':'100px', 'display':'inline-block'}
-                                                ),
-                                                html.P(id="scatter-wrong-answer", children="Źle!", style={'display': 'none'}),
-                                                html.P(id="scatter-good-answer", children="Dobrze!", style={'display': 'none'})
+                                                    style={'display':'inline-block', 'vertical-align': 'middle', 'padding': '0 20px'},
+                                                )
                                             ]
                                         ),
                                         
-                                        html.Button(
+                                        dbc.Button(
                                             'Sprawdź odpowiedź',
-                                            id="scatter-check-answer-button",
+                                            color='primary',
+                                            id="scatter-check-answer-button"
                                         ),
                                         html.Div(id='scatter-number-of-clicks',
-                                             style={'display': 'none'}, children='0')
+                                             style={'display': 'none'}, children='0'),
+                                        html.Div(children = [                                        
+                                            dbc.Alert("Źle!", id="scatter-wrong-answer", style={'display': 'none'}, color='danger'),
+                                        dbc.Alert("Dobrze!", id="scatter-good-answer", style={'display': 'none'})])
+
                                     ]
                                 ),
                                 html.Div(
@@ -273,11 +280,11 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=scatter_bad_graph),
+                                                    dcc.Graph( figure=scatter_bad_graph),
                                                 ], id='scatter-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='scatter-good-graph', style={'display': 'inline-block'})]
                                         ), 
-                                        html.Plaintext(id='scatter-explanation'),
+                                        html.P(id='scatter-explanation', className='explain'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -306,18 +313,21 @@ app.layout = html.Div(
                                                                     {'label': ' Odp b', 'value': 'b'},
                                                                     {'label': ' Odp c', 'value': 'c'},
                                                                     ],
-                                                                value = ""),
-                                                html.P(id="scatter-3d-wrong-answer", children="Źle!", style={'display': 'none'}),
-                                                html.P(id="scatter-3d-good-answer", children="Dobrze!", style={'display': 'none'})
+                                                                value = "",
+                                                                labelClassName='mr-2')
                                             ]
                                         ),
                                         
-                                        html.Button(
+                                        dbc.Button(
                                             'Sprawdź odpowiedź',
+                                            color='primary',
                                             id="scatter-3d-check-answer-button",
                                         ),
                                         html.Div(id='scatter-3d-number-of-clicks',
-                                             style={'display': 'none'}, children='0')
+                                             style={'display': 'none'}, children='0'),
+                                        html.Div(children = [                                        
+                                            dbc.Alert("Źle!", id="scatter-3d-wrong-answer", style={'display': 'none'}, color='danger'),
+                                        dbc.Alert("Dobrze!", id="scatter-3d-good-answer", style={'display': 'none'})])
                                     ]
                                 ),
                                 html.Div(
@@ -325,11 +335,11 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=scatter_3d_bad_graph),
+                                                    dcc.Graph(style={'height': '400px'}, figure=scatter_3d_bad_graph),
                                                 ], id='scatter-3d-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='scatter-3d-good-graph', style={'display': 'inline-block'})]
                                         ), 
-                                        html.Plaintext(id='scatter-3d-explanation'),
+                                        html.P(id='scatter-3d-explanation', className='explain'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -358,18 +368,21 @@ app.layout = html.Div(
                                                                     {'label': '2015', 'value': 'b'},
                                                                     {'label': '2016', 'value': 'c'},
                                                                     ],
-                                                                value = ""),
-                                                html.P(id="piechart-wrong-answer", children="Źle!", style={'display': 'none'}),
-                                                html.P(id="piechart-good-answer", children="Dobrze!", style={'display': 'none'})
+                                                                value = "",
+                                                                labelClassName='mr-2')
                                             ]
                                         ),
                                         
-                                        html.Button(
+                                        dbc.Button(
                                             'Sprawdź odpowiedź',
+                                            color='primary',
                                             id="piechart-check-answer-button",
                                         ),
                                         html.Div(id='piechart-number-of-clicks',
-                                             style={'display': 'none'}, children='0')
+                                             style={'display': 'none'}, children='0'),
+                                        html.Div(children = [                                        
+                                            dbc.Alert("Źle!", id="piechart-wrong-answer", style={'display': 'none'}, color='danger'),
+                                        dbc.Alert("Dobrze!", id="piechart-good-answer", style={'display': 'none'})])
                                     ]
                                 ),
                                 html.Div(
@@ -377,11 +390,11 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=piechart_bad_graph),
+                                                    dcc.Graph(style={'height': '400px'}, figure=piechart_bad_graph),
                                                 ], id='piechart-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='piechart-good-graph', style={'display': 'inline-block'})]
                                         ), 
-                                        html.Plaintext(id='piechart-explanation'),
+                                        html.P(id='piechart-explanation', className='explain'),
                                     ], style={'display': 'inline-block'}
                                 )
                             ]
@@ -410,18 +423,21 @@ app.layout = html.Div(
                                                                     {'label': ' Odp b', 'value': 'b'},
                                                                     {'label': ' Odp c', 'value': 'c'},
                                                                     ],
-                                                                value = ""),
-                                                html.P(id="heatmap-wrong-answer", children="Źle!", style={'display': 'none'}),
-                                                html.P(id="heatmap-good-answer", children="Dobrze!", style={'display': 'none'})
+                                                                value = "",
+                                                                labelClassName='mr-2'),
                                             ]
                                         ),
                                         
-                                        html.Button(
+                                        dbc.Button(
                                             'Sprawdź odpowiedź',
+                                            color='primary',
                                             id="heatmap-check-answer-button",
                                         ),
                                         html.Div(id='heatmap-number-of-clicks',
-                                             style={'display': 'none'}, children='0')
+                                             style={'display': 'none'}, children='0'),
+                                        html.Div(children = [                                        
+                                            dbc.Alert("Źle!", id="heatmap-wrong-answer", style={'display': 'none'}, color='danger'),
+                                        dbc.Alert("Dobrze!", id="heatmap-good-answer", style={'display': 'none'})])
                                     ]
                                 ),
                                 html.Div(
@@ -429,12 +445,12 @@ app.layout = html.Div(
                                         html.Div(
                                             children=[
                                                 html.Div([
-                                                    dcc.Graph(figure=heatmap_bad_graph),
+                                                    dcc.Graph(style={'height': '400px'}, figure=heatmap_bad_graph),
                                                 ], id='heatmap-bad-graph', style={'display': 'inline-block'}),
                                                 html.Div(id='heatmap-good-graph1', style={'display': 'inline-block'}),
                                                 ]
                                         ), 
-                                        html.Plaintext(id='heatmap-explanation'),
+                                        html.P(id='heatmap-explanation', className='explain'),
                                     ], style={'display': 'inline-block'}
                                 ),
                                 html.Div(
@@ -481,24 +497,25 @@ def update_barplot_output(n_clicks, user_input, old_n_clicks):
         if user_input=="":
             return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "W styczniu 2017 Graf Kowalski wziął pożyczkę wysokości 80$. Odsetki wysokości 1% na miesiąc. \n \
-                Oba wykresy przedstawiają stan zadłużenia Grafa, odnotowywany raz na 5 miesięcy począwszy od marca 2017 \n \
-                (2 miesiące od zaciągnięcia pożyczki) do lipca 2020. \n \n \
-                Autor lewego wykresu postanowił posortować oś X według nazw miesięcy, w których wypadały kolejne odnotowania stanu zadłużenia. \n \
-                Wprowadza to czytelnika w błąd, sugerując, że przedstawione zdarzenia następowały chronologicznie. \n \
-                Gubiąc faktyczną kolejność zdarzeń, a co za tym idzie rosnący charakter wykresu, użytkownik pomyśli, że Kowalski zaciąga kilkanaście \n \
-                pożyczek na miesiąc i losowo niektóre spłaca. Po uważniejszym przyjrzeniu się odbiorca zauważy co najwyżej, że brakuje kilku miesięcy (np. maja) \n \
-                i nie domyśli się co tak naprawdę wykres przedstawia. \n \n \
-                Co więcej autor wykresu uzał, że skoro pożyczka wynosiła 80$, a najwyższa wartość zadłużenia to 122$, \n \
-                dobrym pomysłem będzie przyjęcie tego przedziału za początek i koniec dla osi Y. \n \
-                Powoduje to, że po pierwsze nie wiadomo ile tak naprawdę wynosiło zadłużenie odnotowane w lipcu, \n \
-                a po drugie zaburza proporcje między słupkami. Na pierwszy rzut oka słupek 'Styczeń' \n \
-                jest 2 razy mniejszy niż słupek 'Listopad', co sugeruje, że zadłużenie w listopadzie było dwukrotnie większe niż w styczniu. \n \
-                Na prawym wykresie widzimy, że tak naprawdę wzrosło tylko ~1.11 razy."
+            exp1 = html.P("W styczniu 2017 Graf Kowalski wziął pożyczkę wysokości 80$. Odsetki wysokości 1% na miesiąc. \
+                Oba wykresy przedstawiają stan zadłużenia Grafa, odnotowywany raz na 5 miesięcy począwszy od marca 2017 \
+                (2 miesiące od zaciągnięcia pożyczki) do lipca 2020.")
+        
+            exp2 =  html.P("Autor lewego wykresu postanowił posortować oś X według nazw miesięcy, w których wypadały kolejne odnotowania stanu zadłużenia. \
+                Wprowadza to czytelnika w błąd, sugerując, że przedstawione zdarzenia następowały chronologicznie.  \
+                Gubiąc faktyczną kolejność zdarzeń, a co za tym idzie rosnący charakter wykresu, użytkownik pomyśli, że Kowalski zaciąga kilkanaście \
+                pożyczek na miesiąc i losowo niektóre spłaca. Po uważniejszym przyjrzeniu się odbiorca zauważy co najwyżej, że brakuje kilku miesięcy (np. maja) \
+                i nie domyśli się co tak naprawdę wykres przedstawia.")
+            exp3 = html.P("Co więcej autor wykresu uzał, że skoro pożyczka wynosiła 80$, a najwyższa wartość zadłużenia to 122$, \
+                dobrym pomysłem będzie przyjęcie tego przedziału za początek i koniec dla osi Y. \
+                Powoduje to, że po pierwsze nie wiadomo ile tak naprawdę wynosiło zadłużenie odnotowane w lipcu, \
+                a po drugie zaburza proporcje między słupkami. Na pierwszy rzut oka słupek 'Styczeń' \
+                jest 2 razy mniejszy niż słupek 'Listopad', co sugeruje, że zadłużenie w listopadzie było dwukrotnie większe niż w styczniu.  \
+                Na prawym wykresie widzimy, że tak naprawdę wzrosło tylko ~1.11 razy.")
             if user_input=="b":
-                return dcc.Graph(figure=barplot_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=barplot_good_graph), [exp1, exp2, exp3], {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=barplot_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=barplot_good_graph), [exp1, exp2, exp3], {'color' : 'red', 'display': 'block'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
@@ -520,13 +537,13 @@ def update_scatter_output(n_clicks, input1, input2, input3, input4, input5, old_
         if input1=="" or input2=="" or input3=="" or input4=="" or input5=="":
             return None, "Zaznacz wszystkie odpowiedzi!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "I jak poszło? Czy zgodzisz się, że poprzedni wykres był chaotyczny? \n \
-                Problemem poprzedniego wykresu jest jego wielowymiarowość, aż 4 zmienne (w dodatku ciągłe!) \n \
-                są przedstawione graficznie, co powoduje, że każda z nich jest trudna do zinterpretowania. \n \
-                Dla odmiany spójrz na poniższe dwa wykresy. W obecnej sytuacji wszystko jest dużo czytelniejsze. \n \
-                Czy teraz uda Ci się poprawnie zidentyfikować te same obiekty? Dodatkowo korzystnie na czytelność \n \
-                wykresu wpłynęło dostosowanie osi. W poprzednim wypadku około 60% wykersu było puste, obserwacje były \n \
-                w jednym miejscu co jeszcze bardziej utrudniło interpretację. Teraz osie są przycięte, tak aby maksymalnie \n \
+            explanation = "I jak poszło? Czy zgodzisz się, że poprzedni wykres był chaotyczny?  \
+                Problemem poprzedniego wykresu jest jego wielowymiarowość, aż 4 zmienne (w dodatku ciągłe!) \
+                są przedstawione graficznie, co powoduje, że każda z nich jest trudna do zinterpretowania. \
+                Dla odmiany spójrz na poniższe dwa wykresy. W obecnej sytuacji wszystko jest dużo czytelniejsze. \
+                Czy teraz uda Ci się poprawnie zidentyfikować te same obiekty? Dodatkowo korzystnie na czytelność \
+                wykresu wpłynęło dostosowanie osi. W poprzednim wypadku około 60% wykersu było puste, obserwacje były \
+                w jednym miejscu co jeszcze bardziej utrudniło interpretację. Teraz osie są przycięte, tak aby maksymalnie \
                 wykorzystać potencjał wykresów. Są też odpowiednio podpisane, w związku z czym nie zgubisz żadnej informacji."
             if correctAnwsers[1]==input1 and \
                 correctAnwsers[2]==input2 and \
@@ -534,9 +551,9 @@ def update_scatter_output(n_clicks, input1, input2, input3, input4, input5, old_
                 correctAnwsers[4]==input4 and \
                 correctAnwsers[5]==input5:
                 
-                return dcc.Graph(figure=scatter_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=scatter_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=scatter_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=scatter_good_graph), explanation, {'color' : 'red', 'display': 'block'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
@@ -556,9 +573,9 @@ def update_scatter_3d_output(n_clicks, user_input, old_n_clicks):
         else:
             explanation = "Wyjaśnienie"
             if user_input=="b":
-                return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=scatter_3d_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=scatter_3d_good_graph), explanation, {'color' : 'red', 'display': 'block'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
@@ -576,15 +593,15 @@ def update_piechart_output(n_clicks, user_input, old_n_clicks):
         if user_input=="":
             return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "Problemem w niepoprawnej wizualizacji jest błędne wykorzystanie wykresów kołowych. Ponieważ suma cen zmienia się, \n \
-                można odnieść mylne wrażenie, że w 2016 roku Focus kosztował drożej niż w 2015 roku. Kąty w wykresach kołowych porównuje \n \
-                się również trudniej w porównaniu do wysokości słupków w wykresie słupkowym. Oprócz tego, w przeciwieństwie do błędnego \n \
-                wykresu, oznaczenia cen dla poszczególnych lat w poprawnym wykresie występują koło siebie. Percepcję utrudniają dodatkowo \n \
+            explanation = "Problemem w niepoprawnej wizualizacji jest błędne wykorzystanie wykresów kołowych. Ponieważ suma cen zmienia się, \
+                można odnieść mylne wrażenie, że w 2016 roku Focus kosztował drożej niż w 2015 roku. Kąty w wykresach kołowych porównuje \
+                się również trudniej w porównaniu do wysokości słupków w wykresie słupkowym. Oprócz tego, w przeciwieństwie do błędnego \
+                wykresu, oznaczenia cen dla poszczególnych lat w poprawnym wykresie występują koło siebie. Percepcję utrudniają dodatkowo \
                 zlewające się kolory."
             if user_input=="b":
-                return dcc.Graph(figure=piechart_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=piechart_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=piechart_good_graph), explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=piechart_good_graph), explanation, {'color' : 'red', 'display': 'block'}, {'display': 'none'}, str(n_clicks)
     else:
         return None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
@@ -604,21 +621,21 @@ def update_heatmap_output(n_clicks, user_input, old_n_clicks):
         if user_input=="":
             return None, None, None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "Tworząc mapy cieplne zazwyczaj sugerujemy się tym, że kolory bliżej czerwonego oznaczają, że na danym obszarze jest zaobserwowanych więcej zjawisk. \n\
-                 Autor tego wykresu postanowił odwrócić kolory, co pomimo istnienia legendy, powoduje dezorientację u użytkownika końcowego. \n \
-                 Warto również zauważyć jak zmienia się odbiór wykresu w zależności od ustawienia stopnia rozmycia dla punktów na mapie. \n \
-                 Mapa cieplna bardzo dobrze pokazuje jak dane się rozkładają na obszarze całej Polski, ale jednocześnieciężko z niej odczytać szczegóły. \n \
+            explanation = "Tworząc mapy cieplne zazwyczaj sugerujemy się tym, że kolory bliżej czerwonego oznaczają, że na danym obszarze jest zaobserwowanych więcej zjawisk. \
+                 Autor tego wykresu postanowił odwrócić kolory, co pomimo istnienia legendy, powoduje dezorientację u użytkownika końcowego. \
+                 Warto również zauważyć jak zmienia się odbiór wykresu w zależności od ustawienia stopnia rozmycia dla punktów na mapie. \
+                 Mapa cieplna bardzo dobrze pokazuje jak dane się rozkładają na obszarze całej Polski, ale jednocześnieciężko z niej odczytać szczegóły. \
                  W przypadku pytań o konkretne województwo czy miejscowość, zamiast ogólnego obszaru, warto przemyśleć inne rodzaje wykresów."
             if user_input=="b":
-                return dcc.Graph(figure=heatmap_good_graph10), \
-                    dcc.Graph(figure=heatmap_good_graph15), \
-                    dcc.Graph(figure=heatmap_good_graph5), \
-                    explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph10), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph15), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph5), \
+                    explanation, {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
-                return dcc.Graph(figure=heatmap_good_graph10), \
-                    dcc.Graph(figure=heatmap_good_graph15), \
-                    dcc.Graph(figure=heatmap_good_graph5), \
-                    explanation, {'color' : 'red', 'display': 'inline'}, {'display': 'none'}, str(n_clicks)
+                return dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph10), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph15), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph5), \
+                    explanation, {'color' : 'red', }, {'display': 'none'}, str(n_clicks)
     else:
         return None, None, None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 

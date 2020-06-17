@@ -345,7 +345,6 @@ def piechart_good_graph():
     ])
     # Change the bar mode
     fig.update_layout(barmode='group', yaxis_tickformat='d', title_text='Ceny poszczególnych marek samochodów w latach 2014-2016', yaxis_title='Cena w zł')
-    fig.show()
     return fig
 
 def heatmap_good_graph(radius):
