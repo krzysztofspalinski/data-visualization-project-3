@@ -15,7 +15,7 @@ import base64
 from bad_graph_helper import barplot_bad_graph, scatter_bad_graph, scatter_3d_bad_graph, piechart_bad_graph
 from good_graph_helper import barplot_good_graph, scatter_good_graph, scatter_3d_good_graph, piechart_good_graph
 from bad_graph_helper import heatmap_bad_graph
-from good_graph_helper import heatmap_good_graph
+from good_graph_helper import heatmap_good_graph, heatmap_good_bargraph
 from utils_iris import iris_data
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -43,6 +43,7 @@ heatmap_good_graph15 = heatmap_good_graph(15)
 heatmap_good_graph5 = heatmap_good_graph(5)
 heatmap_good_graph1 = heatmap_good_graph(1)
 heatmap_good_graph10 = heatmap_good_graph(10)
+heatmap_good_bargraph = heatmap_good_bargraph()
 
 app = dash.Dash(__name__, external_stylesheets=[
     dbc.themes.BOOTSTRAP,
@@ -190,17 +191,15 @@ app.layout = html.Div(
                             children=[
                                 html.Div(
                                     children=[
-                                        html.P('Mimo, że zazwyczaj dodawanie cech jest wygodną formą zwiększenia informacji, \
-                                                ich nadmiar bywa zgubny. Poniższy wykres przedstawia znany w świecie uczenia maszynowego \
+                                        html.H1(
+                                            children='Czy potrafisz przypisać punkty oznaczone symbolem X do odpowiednich klas?',
+                                            style={'font-weight': 'bold',
+                                                   'padding': '10px'}
+                                        ),
+                                        html.P('Poniższy wykres przedstawia znany w świecie uczenia maszynowego \
                                                 zbiór irysów. Oś x przedstawia długość kielicha, oś y szerokość kielicha, kolor oznacza długość \
                                                 płatka, natomiast wielkość punktów reprezentuje szerokość płatka. Poszczególne gatunki irysów \
-                                                oznaczone  są różnymi symbolami.'),
-                                        html.P(
-                                            children='Twoim celem jest przypisanie punktów oznaczonych symbolem X \
-                                                do odpowiedniego gatunku kwiatu (setosa, virginica, versicolor). \
-                                                Porównaj wszystkie cztery cechy obiektów i sprawdź ile udało Ci się poprawnie odszyfrować!',
-                                            style={'font-weight': 'bold'}
-                                        ),
+                                                oznaczone  są różnymi symbolami. Twoim zadaniem jest sklasyfikowanie irysów oznaczonych symbolem X.'),
                                         html.Div(
                                             children=[
                                                 html.P(children='Punkt 1 ',style={'display':'inline-block'} ),
@@ -301,7 +300,7 @@ app.layout = html.Div(
                                 html.Div(
                                     children=[
                                         html.H1(
-                                            children='Pytanie',
+                                            children='W Firmie 3, który produkt miał większą sprzedaż w 2014 roku?',
                                             style={'font-weight': 'bold',
                                                    'padding': '10px'}
                                         ),
@@ -309,9 +308,9 @@ app.layout = html.Div(
                                             children=[
                                                 dcc.RadioItems(id='scatter-3d-input',
                                                                 options = [
-                                                                    {'label': ' Odp a', 'value': 'a'},
-                                                                    {'label': ' Odp b', 'value': 'b'},
-                                                                    {'label': ' Odp c', 'value': 'c'},
+                                                                    {'label': ' Produkt A   ', 'value': 'a'},
+                                                                    {'label': ' Produkt B   ', 'value': 'b'},
+                                                                    {'label': ' Sprzedaż obu produktów była taka sama ', 'value': 'c'},
                                                                     ],
                                                                 value = "",
                                                                 labelClassName='mr-2')
@@ -411,7 +410,7 @@ app.layout = html.Div(
                                 html.Div(
                                     children=[
                                         html.H1(
-                                            children='Pytanie',
+                                            children='Jakie województwo charakteryzuje się największą częstotliwością występowania choroby?',
                                             style={'font-weight': 'bold',
                                                    'padding': '10px'}
                                         ),
@@ -419,9 +418,9 @@ app.layout = html.Div(
                                             children=[
                                                 dcc.RadioItems(id='heatmap-input',
                                                                 options = [
-                                                                    {'label': ' Odp a', 'value': 'a'},
-                                                                    {'label': ' Odp b', 'value': 'b'},
-                                                                    {'label': ' Odp c', 'value': 'c'},
+                                                                    {'label': ' Śląskie', 'value': 'a'},
+                                                                    {'label': ' Mazowieckie', 'value': 'b'},
+                                                                    {'label': ' Małopolskie', 'value': 'c'},
                                                                     ],
                                                                 value = "",
                                                                 labelClassName='mr-2'),
@@ -447,7 +446,7 @@ app.layout = html.Div(
                                                 html.Div([
                                                     dcc.Graph(style={'height': '400px'}, figure=heatmap_bad_graph),
                                                 ], id='heatmap-bad-graph', style={'display': 'inline-block'}),
-                                                html.Div(id='heatmap-good-graph1', style={'display': 'inline-block'}),
+                                                html.Div(id='heatmap-good-bargraph1', style={'display': 'inline-block'}),
                                                 ]
                                         ), 
                                         html.P(id='heatmap-explanation', className='explain'),
@@ -457,6 +456,7 @@ app.layout = html.Div(
                                     children=[
                                         html.Div(
                                             children=[
+                                                html.Div(id='heatmap-good-graph1', style={'display': 'inline-block'}),
                                                 html.Div(id='heatmap-good-graph2', style={'display': 'inline-block'}),
                                                 html.Div(id='heatmap-good-graph3', style={'display': 'inline-block'}),
                                                 ]
@@ -472,7 +472,7 @@ app.layout = html.Div(
                       run='''
                             new fullScroll({	
                                 mainElement: 'main', 
-                                sections:['title-section', 'barplot-section', 'scatter-section', 'scatter-3d-section', 'piechart-section'],
+                                sections:['title-section', 'barplot-section', 'scatter-section', 'scatter-3d-section', 'piechart-section', 'heatmap-section'],
                                 displayDots: true,
                                 dotsPosition: 'right',
                                 animateTime: 0.7,
@@ -537,14 +537,12 @@ def update_scatter_output(n_clicks, input1, input2, input3, input4, input5, old_
         if input1=="" or input2=="" or input3=="" or input4=="" or input5=="":
             return None, "Zaznacz wszystkie odpowiedzi!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "I jak poszło? Czy zgodzisz się, że poprzedni wykres był chaotyczny?  \
-                Problemem poprzedniego wykresu jest jego wielowymiarowość, aż 4 zmienne (w dodatku ciągłe!) \
-                są przedstawione graficznie, co powoduje, że każda z nich jest trudna do zinterpretowania. \
-                Dla odmiany spójrz na poniższe dwa wykresy. W obecnej sytuacji wszystko jest dużo czytelniejsze. \
-                Czy teraz uda Ci się poprawnie zidentyfikować te same obiekty? Dodatkowo korzystnie na czytelność \
-                wykresu wpłynęło dostosowanie osi. W poprzednim wypadku około 60% wykersu było puste, obserwacje były \
-                w jednym miejscu co jeszcze bardziej utrudniło interpretację. Teraz osie są przycięte, tak aby maksymalnie \
-                wykorzystać potencjał wykresów. Są też odpowiednio podpisane, w związku z czym nie zgubisz żadnej informacji."
+            explanation = "I jak poszło? Czy zgodzisz się, że pierwszy wykres był chaotyczny? \n \
+                Problemem pierwszego wykresu jest jego wielowymiarowość, aż 4 zmienne (w dodatku ciągłe!) \n \
+                są przedstawione graficznie, co powoduje, że każda z nich jest trudna do zinterpretowania. \n \
+                Dla odmiany spójrz na nowe dwa wykresy. Dodatkowo korzystnie na czytelność \n \
+                wykresu wpłynęło dostosowanie osi. W poprzednim wypadku około 60% wykresu było puste, obserwacje były \n \
+                w jednym miejscu co jeszcze bardziej utrudniło interpretację."
             if correctAnwsers[1]==input1 and \
                 correctAnwsers[2]==input2 and \
                 correctAnwsers[3]==input3 and \
@@ -571,9 +569,15 @@ def update_scatter_3d_output(n_clicks, user_input, old_n_clicks):
         if user_input=="":
             return None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
-            explanation = "Wyjaśnienie"
-            if user_input=="b":
-                return dcc.Graph(style={'height': '400px'}, figure=scatter_3d_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
+            explanation = "Wykresy 3D prawie nigdy nie są dobrym wyborem. Mimo że często wyglądają bardzo efektownie, \n \
+utrudniają one odczytywanie danych z wykresów. W przypadku kiedy dane dotyczą sprzedaży kilku \n \
+produktów z wielu firm, umieszczenie ich wszystkich na jednym wykresie nie jest optymalnym rozwiązaniem. \n \
+Dodatkowym utrudnieniem jest brak grupowania legendy. \n \n \
+Cztery osobne wykresy pozwoliły na przedstawienie tych danych w taki sposób, że porównywanie sprzedaży \n \
+produktów w obrębie jednej firmy jest ułatwione. W przypadku gdyby istotne było porównywanie wyników \n \
+pomiędzy różnymi firmami, należałoby rozważyć inny typ wykresu. "
+            if user_input=="a":
+                return dcc.Graph(figure=scatter_3d_good_graph), explanation, {'display': 'none'}, {'color' : 'green', 'display': 'inline'}, str(n_clicks)
             else:
                 return dcc.Graph(style={'height': '400px'}, figure=scatter_3d_good_graph), explanation, {'color' : 'red', 'display': 'block'}, {'display': 'none'}, str(n_clicks)
     else:
@@ -609,6 +613,7 @@ def update_piechart_output(n_clicks, user_input, old_n_clicks):
     dash.dependencies.Output('heatmap-good-graph1', 'children'),
     dash.dependencies.Output('heatmap-good-graph2', 'children'),
     dash.dependencies.Output('heatmap-good-graph3', 'children'),
+    dash.dependencies.Output('heatmap-good-bargraph1', 'children'),
     dash.dependencies.Output('heatmap-explanation', 'children'),
     dash.dependencies.Output('heatmap-wrong-answer', 'style'),
     dash.dependencies.Output('heatmap-good-answer', 'style'),
@@ -619,7 +624,7 @@ def update_piechart_output(n_clicks, user_input, old_n_clicks):
 def update_heatmap_output(n_clicks, user_input, old_n_clicks):
     if n_clicks is not None and n_clicks > int(old_n_clicks):
         if user_input=="":
-            return None, None, None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
+            return None, None, None, None, "Zaznacz odpowiedź!", {'display': 'none'}, {'display': 'none'}, str(n_clicks)
         else:
             explanation = "Tworząc mapy cieplne zazwyczaj sugerujemy się tym, że kolory bliżej czerwonego oznaczają, że na danym obszarze jest zaobserwowanych więcej zjawisk. \
                  Autor tego wykresu postanowił odwrócić kolory, co pomimo istnienia legendy, powoduje dezorientację u użytkownika końcowego. \
@@ -630,14 +635,16 @@ def update_heatmap_output(n_clicks, user_input, old_n_clicks):
                 return dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph10), \
                     dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph15), \
                     dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph5), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_bargraph), \
                     explanation, {'display': 'none'}, {'color' : 'green', 'display': 'block'}, str(n_clicks)
             else:
                 return dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph10), \
                     dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph15), \
                     dcc.Graph(style={'height': '400px'}, figure=heatmap_good_graph5), \
+                    dcc.Graph(style={'height': '400px'}, figure=heatmap_good_bargraph), \
                     explanation, {'color' : 'red', }, {'display': 'none'}, str(n_clicks)
     else:
-        return None, None, None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
+        return None, None, None, None, "", {'display': 'none'}, {'display': 'none'}, old_n_clicks
 
 if __name__ == '__main__':
     app.run_server(debug=True)
